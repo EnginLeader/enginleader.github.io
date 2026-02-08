@@ -32,7 +32,7 @@ canvas{position:fixed;inset:0;z-index:0}
   position:relative;
   z-index:2;
   margin:60px 0;
-  padding:45px 50px;
+  padding:45px 50px 25px 50px;
   width:95%;
   max-width:520px;
   background:rgba(15,15,15,0.92);
@@ -68,7 +68,7 @@ canvas{position:fixed;inset:0;z-index:0}
   display:flex;
   gap:12px;
   justify-content:center;
-  margin-bottom:35px;
+  margin-bottom:25px;
 }
 
 .link{
@@ -90,21 +90,33 @@ canvas{position:fixed;inset:0;z-index:0}
   transform:scale(1.1);
 }
 
-/* HIGHLIGHTS */
-.highlight-icon{
-  font-size:60px;
+/* HIGHLIGHT */
+.highlight{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  gap:6px;
+  margin-bottom:0;
+}
+.highlight i{
+  font-size:52px;
   color:#a855f7;
-  background:#1b1b1b;
   border:1px solid #a855f7;
   border-radius:12px;
-  padding:20px;
-  display:inline-block;
-  cursor:pointer;
+  padding:18px;
+  background:#1b1b1b;
   transition:.3s;
 }
-.highlight-icon:hover{
+.highlight i:hover{
   box-shadow:0 0 20px #a855f7;
   transform:scale(1.1);
+}
+.highlight span{
+  font-size:14px;
+  letter-spacing:1px;
+  color:#a855f7;
 }
 
 /* POPUP OVERLAY */
@@ -136,20 +148,6 @@ canvas{position:fixed;inset:0;z-index:0}
 .overlay iframe:hover{
   transform:scale(1.05);
 }
-
-/* KAPATMA BUTONU */
-.close-btn{
-  position:absolute;
-  top:20px;
-  right:30px;
-  font-size:28px;
-  color:#a855f7;
-  cursor:pointer;
-  transition:.3s;
-}
-.close-btn:hover{
-  color:#fff;
-}
 </style>
 </head>
 
@@ -160,6 +158,7 @@ canvas{position:fixed;inset:0;z-index:0}
 <div class="card">
 
   <img src="1770549952621.png" class="avatar">
+
   <div class="title">EnginLeader</div>
 
   <!-- İKONLAR -->
@@ -172,16 +171,16 @@ canvas{position:fixed;inset:0;z-index:0}
     <a href="#" class="link"><i class="fa-brands fa-instagram"></i></a>
   </div>
 
-  <!-- HIGHLIGHTS TEK İKON -->
-  <div class="clips-title">HIGHLIGHTS</div>
-  <div class="highlight-icon" id="highlightBtn"><i class="fa-solid fa-play"></i></div>
+  <!-- HIGHLIGHT YOUTUBE SIMGE -->
+  <div class="highlight" id="highlightBtn">
+    <i class="fa-brands fa-youtube"></i>
+    <span>Youtube</span>
+  </div>
 
 </div>
 
 <!-- POPUP OVERLAY -->
 <div class="overlay" id="overlay">
-  <div class="close-btn" id="closeOverlay"><i class="fa-solid fa-xmark"></i></div>
-
   <iframe src="https://www.youtube.com/embed/mcgwul5InXc?autoplay=0&controls=1&loop=1&playlist=mcgwul5InXc" title="Clip 1" frameborder="0" allowfullscreen></iframe>
   <iframe src="https://www.youtube.com/embed/VIjytDcMfJg?autoplay=0&controls=1&loop=1&playlist=VIjytDcMfJg" title="Clip 2" frameborder="0" allowfullscreen></iframe>
   <iframe src="https://www.youtube.com/embed/bo9C5NHkBDA?autoplay=0&controls=1&loop=1&playlist=bo9C5NHkBDA" title="Clip 3" frameborder="0" allowfullscreen></iframe>
@@ -216,13 +215,15 @@ setInterval(draw,35);
 /* HIGHLIGHT POPUP */
 const highlightBtn = document.getElementById("highlightBtn");
 const overlay = document.getElementById("overlay");
-const closeOverlay = document.getElementById("closeOverlay");
 
 highlightBtn.addEventListener("click",()=>{ overlay.style.display="flex"; });
-closeOverlay.addEventListener("click",()=>{ overlay.style.display="none"; });
 
-// İstersen ESC ile kapatma
-document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") overlay.style.display="none"; });
+// Overlay dışında tıklayınca kapat
+overlay.addEventListener("click",(e)=>{
+  if(e.target===overlay){
+    overlay.style.display="none";
+  }
+});
 </script>
 
 </body>
