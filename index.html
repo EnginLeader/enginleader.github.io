@@ -110,10 +110,10 @@ canvas{position:fixed;inset:0;z-index:0}
   transform:scale(1.1);
 }
 
-/* HIGHLIGHT CONTAINER - Blur wrapper'ın dışında */
+/* HIGHLIGHT CONTAINER - Blur wrapper'ın dışında, YouTube ikonunu 15px aşağı çekildi */
 .highlight-container{
   position:fixed;
-  bottom:calc(50% - 205px);
+  bottom:calc(50% - 190px); /* Önceki 205px idi, 15px aşağı çekildi */
   left:50%;
   transform:translateX(-50%);
   z-index:150;
@@ -292,7 +292,7 @@ canvas{position:fixed;inset:0;z-index:0}
     height: 250px;
   }
   .highlight-container{
-    bottom:calc(50% - 185px);
+    bottom:calc(50% - 175px); /* Mobilde de 15px aşağı çekildi */
   }
 }
 </style>
@@ -302,7 +302,6 @@ canvas{position:fixed;inset:0;z-index:0}
 
 <canvas id="matrix"></canvas>
 
-<!-- BLUR WRAPPER - Sadece canvas ve card'ı kapsıyor -->
 <div class="blur-wrapper" id="blurWrapper">
   <div class="card" id="mainCard">
 
@@ -328,7 +327,7 @@ canvas{position:fixed;inset:0;z-index:0}
   </div>
 </div>
 
-<!-- HIGHLIGHT YOUTUBE SIMGE - Blur wrapper'ın tamamen dışında -->
+<!-- HIGHLIGHT YOUTUBE SIMGE -->
 <div class="highlight-container">
   <div class="highlight" id="highlightBtn">
     <i class="fa-brands fa-youtube"></i>
@@ -457,7 +456,6 @@ const overlay = document.getElementById("overlay");
 const videoFrame = document.getElementById("videoFrame");
 const videoThumbnails = document.querySelectorAll('.hover-popup img');
 
-// Video thumbnail'lere tıklayınca overlay aç
 videoThumbnails.forEach(thumbnail => {
   thumbnail.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -471,14 +469,12 @@ videoThumbnails.forEach(thumbnail => {
   });
 });
 
-// Overlay'e tıklayınca kapat
 overlay.addEventListener('click', (e) => {
   if(e.target === overlay) {
     closeOverlay();
   }
 });
 
-// ESC tuşu ile kapat
 document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape' && overlay.style.display === 'flex') {
     closeOverlay();
