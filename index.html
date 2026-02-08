@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>EnginLeader</title>
 
-<!-- DAHA KÖŞELİ CYBERPUNK FONT -->
+<!-- CYBERPUNK FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Teko:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
@@ -18,10 +18,9 @@
   box-sizing:border-box;
 }
 
-/* BODY */
 body{
   height:100vh;
-  background:#050505;
+  background:#060606;
   overflow:hidden;
 
   display:flex;
@@ -32,55 +31,57 @@ body{
   color:white;
 }
 
-/* MATRIX */
+/* ===== MATRIX ===== */
 canvas{
   position:fixed;
   inset:0;
   z-index:0;
 }
 
-/* ===== GLASSMORPH CARD ===== */
+/* ===== MOUSE NEON LIGHT ===== */
+.cursor-glow{
+  position:fixed;
+  width:350px;
+  height:350px;
+  pointer-events:none;
+
+  background:radial-gradient(circle, rgba(168,85,247,.25) 0%, transparent 60%);
+  transform:translate(-50%,-50%);
+  z-index:1;
+}
+
+/* ===== ANA PANEL ===== */
 .card{
   position:relative;
   z-index:2;
 
   padding:45px 40px;
-  text-align:center;
 
-  backdrop-filter: blur(14px);
-  background:rgba(20,20,20,.55);
+  backdrop-filter:blur(14px);
+  background:rgba(20,20,20,.65);
 
   border-radius:22px;
 
-  border:2px solid transparent;
+  border:2px solid #a855f7;
 
-  background-clip:padding-box;
+  box-shadow:0 0 30px rgba(168,85,247,.35);
 
+  text-align:center;
+
+  /* açılış animasyonu */
+  animation:enter .9s ease forwards;
+  opacity:0;
+  transform:scale(.85);
 }
 
-/* GRADIENT NEON BORDER */
-.card::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-
-  border-radius:24px;
-
-  background:linear-gradient(45deg,#a855f7,#9333ea,#7e22ce,#a855f7);
-
-  z-index:-1;
-
-  filter:blur(8px);
-
-  animation:borderGlow 4s linear infinite;
+@keyframes enter{
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
 }
 
-@keyframes borderGlow{
-  0%{filter:blur(6px) hue-rotate(0deg);}
-  100%{filter:blur(6px) hue-rotate(360deg);}
-}
-
-/* PROFİL */
+/* PROFIL */
 .avatar{
   width:135px;
   height:135px;
@@ -88,13 +89,12 @@ canvas{
   object-fit:cover;
 
   border:3px solid #a855f7;
-
-  box-shadow:0 0 30px #a855f7;
+  box-shadow:0 0 25px #a855f7;
 
   margin-bottom:25px;
 }
 
-/* ===== GLITCH BAŞLIK ===== */
+/* ===== BAŞLIK ===== */
 .title{
   font-family:'Orbitron', sans-serif;
 
@@ -102,62 +102,21 @@ canvas{
   letter-spacing:4px;
   font-weight:900;
 
-  position:relative;
+  margin-bottom:30px;
 
   color:#fff;
 
-  margin-bottom:30px;
+  text-shadow:
+    0 0 8px #a855f7,
+    0 0 20px #9333ea;
 
-  animation:flicker 2s infinite;
+  /* hafif glitch */
+  animation:glitch .12s infinite alternate;
 }
 
-@keyframes flicker{
-  0%,18%,22%,25%,53%,57%,100%{
-    text-shadow:
-      0 0 8px #a855f7,
-      0 0 25px #9333ea,
-      0 0 50px #7e22ce;
-  }
-  20%,24%,55%{
-    text-shadow:none;
-  }
-}
-
-/* glitch katman */
-.title::before,
-.title::after{
-  content:"EnginLeader";
-  position:absolute;
-  left:0;
-  width:100%;
-  overflow:hidden;
-}
-
-.title::before{
-  color:#ff00ff;
-  animation:glitch1 2s infinite;
-}
-
-.title::after{
-  color:#00ffff;
-  animation:glitch2 2s infinite;
-}
-
-@keyframes glitch1{
-  0%{transform:translate(0)}
-  20%{transform:translate(-2px,-2px)}
-  40%{transform:translate(2px,2px)}
-  60%{transform:translate(-1px,1px)}
-  80%{transform:translate(1px,-1px)}
-  100%{transform:translate(0)}
-}
-
-@keyframes glitch2{
-  0%{transform:translate(0)}
-  25%{transform:translate(2px,-2px)}
-  50%{transform:translate(-2px,2px)}
-  75%{transform:translate(1px,1px)}
-  100%{transform:translate(0)}
+@keyframes glitch{
+  from{transform:translate(0)}
+  to{transform:translate(.7px,-.7px)}
 }
 
 /* ===== LINK KARTLAR ===== */
@@ -169,27 +128,26 @@ canvas{
 
   border-radius:14px;
 
-  background:rgba(40,40,40,.6);
+  background:rgba(40,40,40,.7);
 
-  border:1px solid rgba(255,255,255,.05);
+  border:1px solid #333;
 
   font-size:20px;
-  letter-spacing:1px;
 
   text-decoration:none;
-  color:#eee;
+  color:#e5e5e5;
 
   transition:.25s;
 }
 
-/* glow animasyonu */
 .link:hover{
   color:#fff;
 
+  border-color:#a855f7;
+
   box-shadow:
     0 0 10px #a855f7,
-    0 0 25px #a855f7,
-    0 0 45px #9333ea;
+    0 0 25px #a855f7;
 
   transform:scale(1.08);
 }
@@ -200,6 +158,7 @@ canvas{
 <body>
 
 <canvas id="matrix"></canvas>
+<div class="cursor-glow" id="glow"></div>
 
 <div class="card">
 
@@ -216,10 +175,9 @@ canvas{
 </div>
 
 
-
 <script>
-/* MATRIX ENGİNLEADER */
-const canvas=document.getElementById("matrix");
+/* ===== MATRIX ===== */
+const canvas=document.querySelector("canvas");
 const ctx=canvas.getContext("2d");
 
 canvas.height=innerHeight;
@@ -250,6 +208,15 @@ function draw(){
 }
 
 setInterval(draw,35);
+
+
+/* ===== MOUSE NEON TAKİP ===== */
+const glow=document.getElementById("glow");
+
+document.addEventListener("mousemove",e=>{
+  glow.style.left=e.clientX+"px";
+  glow.style.top=e.clientY+"px";
+});
 </script>
 
 </body>
