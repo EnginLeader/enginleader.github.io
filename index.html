@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>EnginLeader</title>
 
 <style>
@@ -12,28 +11,36 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
+  font-family: Arial, sans-serif;
 }
 
+/* ===== BODY ===== */
 body{
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#0b0b0b,#151515,#1f1f1f);
-
+  background:#0b0b0b;
+  overflow:hidden;
   display:flex;
   justify-content:center;
   align-items:center;
-
   min-height:100vh;
+  color:white;
 }
 
-/* ORTADAKİ PANEL */
+/* ===== MATRIX CANVAS ===== */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:0;
+}
+
+/* ===== ANA KART ===== */
 .card{
-  width:90%;
-  max-width:380px;
+  position:relative;
+  z-index:2;
 
-  background:#141414;
+  padding:35px 30px;
 
-  padding:35px 25px;
-
+  background:rgba(15,15,15,0.92);
   border-radius:20px;
 
   text-align:center;
@@ -41,75 +48,135 @@ body{
   border:1px solid #2a2a2a;
 
   box-shadow:
-    0 0 15px #a855f7,
-    0 0 50px rgba(168,85,247,0.25);
+    0 0 20px #a855f7,
+    0 0 60px rgba(168,85,247,0.25);
 }
 
-/* FOTO */
+/* ===== PROFİL ===== */
 .avatar{
-  width:140px;
-  height:140px;
+  width:130px;
+  height:130px;
   border-radius:50%;
   object-fit:cover;
-
-  margin-bottom:25px;
 
   border:3px solid #a855f7;
 
   box-shadow:0 0 20px #a855f7;
+
+  margin-bottom:20px;
 }
 
-/* TÜM YAZILAR */
-.neon{
-  display:block;
-  margin:12px 0;
+/* ===== BAŞLIK ===== */
+.title{
+  font-size:30px;
+  margin-bottom:25px;
 
-  font-size:18px;
+  color:#e9d5ff;
+
+  text-shadow:
+    0 0 6px #a855f7,
+    0 0 20px #9333ea;
+}
+
+/* ===== KÜÇÜK LİNK KARTLARI ===== */
+.link{
+  display:inline-block;        /* yazıya göre genişler */
+  padding:10px 22px;
+  margin:8px auto;
+
+  border-radius:12px;
+
+  background:#1b1b1b;
+
+  border:1px solid #333;
 
   text-decoration:none;
-
   color:#e5e5e5;
 
   transition:0.25s;
 }
 
-/* HOVER EFEKT */
-.neon:hover{
+/* hover = neon */
+.link:hover{
   color:#d8b4fe;
 
-  text-shadow:
-    0 0 6px #a855f7,
-    0 0 18px #a855f7,
-    0 0 35px #9333ea;
+  border-color:#a855f7;
 
-  transform:scale(1.06);
-}
+  box-shadow:
+    0 0 10px #a855f7,
+    0 0 25px #a855f7;
 
-/* BAŞLIK */
-.title{
-  font-size:32px;
-  margin-bottom:25px;
+  transform:scale(1.08);
 }
 
 </style>
 </head>
 
-
 <body>
+
+<!-- MATRIX ARKA PLAN -->
+<canvas id="matrix"></canvas>
 
 <div class="card">
 
   <img src="1770549952621.png" class="avatar">
 
-  <div class="title neon">EnginLeader</div>
+  <div class="title">EnginLeader</div>
 
-  <a href="#" class="neon">Kick</a>
-  <a href="#" class="neon">YouTube</a>
-  <a href="#" class="neon">Instagram</a>
-  <a href="#" class="neon">Discord</a>
-  <a href="#" class="neon">Steam</a>
+  <a href="#" class="link">Kick</a><br>
+  <a href="#" class="link">YouTube</a><br>
+  <a href="#" class="link">Instagram</a><br>
+  <a href="#" class="link">Discord</a><br>
+  <a href="#" class="link">Steam</a>
 
 </div>
+
+
+
+<script>
+/* ===== MATRIX ENGİNLEADER AKIŞI ===== */
+
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+const text = "enginleader";
+const fontSize = 18;
+
+const columns = canvas.width / fontSize;
+
+const drops = [];
+
+for(let i=0;i<columns;i++){
+  drops[i]=1;
+}
+
+function draw(){
+
+  ctx.fillStyle="rgba(0,0,0,0.06)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="#a855f7";  // MOR
+  ctx.font = fontSize + "px monospace";
+
+  for(let i=0;i<drops.length;i++){
+
+    const char = text[Math.floor(Math.random()*text.length)];
+
+    ctx.fillText(char, i*fontSize, drops[i]*fontSize);
+
+    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
+      drops[i]=0;
+    }
+
+    drops[i]++;
+  }
+}
+
+setInterval(draw, 35);
+</script>
 
 </body>
 </html>
