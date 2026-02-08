@@ -62,11 +62,11 @@ canvas{position:fixed;inset:0;z-index:0}
   justify-content:space-between;
 }
 
-/* PROFIL */
+/* PROFIL (DİKDÖRTGEN OVAL) */
 .avatar{
-  width:130px;
-  height:130px;
-  border-radius:50%;
+  width:150px;
+  height:150px;
+  border-radius:22px; /* Oval köşe */
   object-fit:cover;
   border:3px solid #a855f7;
   box-shadow:0 0 20px #a855f7;
@@ -110,10 +110,10 @@ canvas{position:fixed;inset:0;z-index:0}
   transform:scale(1.1);
 }
 
-/* HIGHLIGHT CONTAINER - Blur wrapper'ın dışında, YouTube ikonunu 15px aşağı çekildi */
+/* HIGHLIGHT CONTAINER */
 .highlight-container{
   position:fixed;
-  bottom:calc(50% - 190px); /* Önceki 205px idi, 15px aşağı çekildi */
+  bottom:calc(50% - 190px);
   left:50%;
   transform:translateX(-50%);
   z-index:150;
@@ -233,66 +233,10 @@ canvas{position:fixed;inset:0;z-index:0}
 }
 
 /* MOBİL UYUMLULUK */
-@media (max-width: 1400px) {
-  .hover-popup{
-    min-width:auto;
-    max-width:95vw;
-    flex-wrap:wrap;
-    gap:15px;
-    padding:20px;
-  }
-  .hover-popup img{
-    width:calc(50% - 8px);
-    height:auto;
-    aspect-ratio:16/9;
-  }
-}
-
-@media (max-width: 768px) {
-  .hover-popup{
-    gap:12px;
-    padding:15px;
-  }
-  .hover-popup img{
-    width:calc(50% - 6px);
-  }
-  .overlay iframe {
-    width: 95%;
-    height: 500px;
-  }
-}
-
 @media (max-width: 480px) {
-  .card { 
-    padding: 30px 25px 10px 25px;
-    min-height:465px;
-  }
-  .title { 
-    font-size: 28px; 
-    letter-spacing: 2px;
-  }
   .avatar { 
-    width: 100px; 
-    height: 100px; 
-  }
-  .links {
-    gap: 10px;
-  }
-  .link {
-    width: 44px;
-    height: 44px;
-    font-size: 20px;
-  }
-  .highlight i {
-    font-size: 46px;
-    padding: 15px;
-  }
-  .overlay iframe {
-    width: 95%;
-    height: 250px;
-  }
-  .highlight-container{
-    bottom:calc(50% - 175px); /* Mobilde de 15px aşağı çekildi */
+    width:120px; 
+    height:120px; 
   }
 }
 </style>
@@ -321,7 +265,6 @@ canvas{position:fixed;inset:0;z-index:0}
       </div>
     </div>
 
-    <!-- BOŞ ALAN - YouTube simgesi için yer tutucu -->
     <div style="height:40px"></div>
 
   </div>
@@ -343,10 +286,8 @@ canvas{position:fixed;inset:0;z-index:0}
   <img src="https://img.youtube.com/vi/sCJuhORPpoE/mqdefault.jpg" alt="Video 4" data-video="sCJuhORPpoE">
 </div>
 
-<!-- ARKA PLAN KARAR EFEKTİ -->
 <div class="hover-backdrop" id="hoverBackdrop"></div>
 
-<!-- POPUP OVERLAY -->
 <div class="overlay" id="overlay">
   <iframe id="videoFrame" src="" title="YouTube Video" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
