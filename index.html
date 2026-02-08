@@ -92,16 +92,20 @@ canvas{position:fixed;inset:0;z-index:0}
   transform:scale(1.1);
 }
 
+/* HIGHLIGHT CONTAINER */
+.highlight-container{
+  position:relative;
+  display:inline-block;
+}
+
 /* HIGHLIGHT */
 .highlight{
-  position:relative;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   cursor:pointer;
   gap:6px;
-  margin-bottom:0;
 }
 .highlight i{
   font-size:52px;
@@ -125,22 +129,31 @@ canvas{position:fixed;inset:0;z-index:0}
 /* HOVER POPUP */
 .hover-popup{
   position:absolute;
-  bottom:110%;
+  bottom:calc(100% + 15px);
   left:50%;
   transform:translateX(-50%);
   background:rgba(10,10,10,0.98);
   border:2px solid #a855f7;
   border-radius:15px;
   padding:20px;
-  display:none;
+  opacity:0;
+  visibility:hidden;
+  display:flex;
   justify-content:center;
   gap:15px;
-  flex-wrap:wrap;
   box-shadow:0 0 30px #a855f7,0 0 60px rgba(168,85,247,.6);
-  z-index:100;
-  width:440px;
-  max-width:95vw;
+  z-index:150;
+  transition:opacity 0.3s, visibility 0.3s;
+  pointer-events:none;
+  min-width:680px;
 }
+
+.hover-popup.show{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+
 .hover-popup::after{
   content:'';
   position:absolute;
@@ -154,13 +167,14 @@ canvas{position:fixed;inset:0;z-index:0}
   border-top:12px solid #a855f7;
 }
 .hover-popup img{
-  width:200px;
-  height:113px;
+  width:150px;
+  height:85px;
   border-radius:10px;
   cursor:pointer;
   border:2px solid #444;
   transition:.3s;
   object-fit:cover;
+  flex-shrink:0;
 }
 .hover-popup img:hover{
   border-color:#a855f7;
@@ -168,23 +182,22 @@ canvas{position:fixed;inset:0;z-index:0}
   box-shadow:0 0 15px #a855f7;
 }
 
-.highlight:hover .hover-popup{
-  display:flex;
-}
-
-/* ARKA PLAN KARAR EFEKTI */
+/* ARKA PLAN KARAR EFEKTİ */
 .hover-backdrop{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0.7);
-  z-index:50;
-  display:none;
+  z-index:100;
+  opacity:0;
+  visibility:hidden;
   backdrop-filter:blur(3px);
+  transition:opacity 0.3s, visibility 0.3s;
+  pointer-events:none;
 }
 
-.highlight:hover ~ .hover-backdrop,
 .hover-backdrop.active{
-  display:block;
+  opacity:1;
+  visibility:visible;
 }
 
 /* POPUP OVERLAY */
@@ -211,6 +224,21 @@ canvas{position:fixed;inset:0;z-index:0}
 }
 
 /* MOBİL UYUMLULUK */
+@media (max-width: 768px) {
+  .hover-popup{
+    min-width:auto;
+    max-width:90vw;
+    flex-wrap:wrap;
+    gap:12px;
+    padding:15px;
+  }
+  .hover-popup img{
+    width:calc(50% - 6px);
+    height:auto;
+    aspect-ratio:16/9;
+  }
+}
+
 @media (max-width: 480px) {
   .card { 
     padding: 30px 25px;
@@ -235,27 +263,9 @@ canvas{position:fixed;inset:0;z-index:0}
     font-size: 46px;
     padding: 15px;
   }
-  .hover-popup{
-    width:340px;
-    padding:15px;
-  }
-  .hover-popup img{
-    width:150px;
-    height:85px;
-  }
   .overlay iframe {
     width: 95%;
     height: 250px;
-  }
-}
-
-@media (max-width: 380px) {
-  .hover-popup{
-    width:300px;
-  }
-  .hover-popup img{
-    width:130px;
-    height:73px;
   }
 }
 </style>
@@ -282,9 +292,11 @@ canvas{position:fixed;inset:0;z-index:0}
   </div>
 
   <!-- HIGHLIGHT YOUTUBE SIMGE -->
-  <div class="highlight" id="highlightBtn">
-    <i class="fa-brands fa-youtube"></i>
-    <span>Youtube</span>
+  <div class="highlight-container">
+    <div class="highlight" id="highlightBtn">
+      <i class="fa-brands fa-youtube"></i>
+      <span>Youtube</span>
+    </div>
     
     <!-- HOVER POPUP -->
     <div class="hover-popup" id="hoverPopup">
@@ -363,16 +375,44 @@ function draw(currentTime) {
 
 requestAnimationFrame(draw);
 
-/* HOVER BACKDROP SİSTEMİ */
+/* HOVER POPUP SİSTEMİ */
+const highlightContainer = document.querySelector('.highlight-container');
 const highlightBtn = document.getElementById('highlightBtn');
+const hoverPopup = document.getElementById('hoverPopup');
 const hoverBackdrop = document.getElementById('hoverBackdrop');
 
-highlightBtn.addEventListener('mouseenter', () => {
+let isHoveringButton = false;
+let isHoveringPopup = false;
+
+function showPopup() {
+  hoverPopup.classList.add('show');
   hoverBackdrop.classList.add('active');
+}
+
+function hidePopup() {
+  if (!isHoveringButton && !isHoveringPopup) {
+    hoverPopup.classList.remove('show');
+    hoverBackdrop.classList.remove('active');
+  }
+}
+
+highlightBtn.addEventListener('mouseenter', () => {
+  isHoveringButton = true;
+  showPopup();
 });
 
 highlightBtn.addEventListener('mouseleave', () => {
-  hoverBackdrop.classList.remove('active');
+  isHoveringButton = false;
+  setTimeout(hidePopup, 100);
+});
+
+hoverPopup.addEventListener('mouseenter', () => {
+  isHoveringPopup = true;
+});
+
+hoverPopup.addEventListener('mouseleave', () => {
+  isHoveringPopup = false;
+  setTimeout(hidePopup, 100);
 });
 
 /* VIDEO POPUP SİSTEMİ */
@@ -388,6 +428,7 @@ videoThumbnails.forEach(thumbnail => {
     videoFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1`;
     overlay.style.display = "flex";
     document.body.style.overflow = "hidden";
+    hoverPopup.classList.remove('show');
     hoverBackdrop.classList.remove('active');
   });
 });
