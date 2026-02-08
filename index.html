@@ -48,10 +48,10 @@ canvas{position:fixed;inset:0;z-index:0}
 /* ANA KART */
 .card{
   position:relative;
-  padding:45px 50px 25px 50px;
+  padding:45px 50px 15px 50px;
   width:95%;
   max-width:520px;
-  min-height:530px;
+  min-height:520px;
   background:rgba(15,15,15,0.92);
   border-radius:22px;
   text-align:center;
@@ -113,7 +113,7 @@ canvas{position:fixed;inset:0;z-index:0}
 /* HIGHLIGHT CONTAINER - Blur wrapper'ın dışında */
 .highlight-container{
   position:fixed;
-  bottom:calc(50% - 210px);
+  bottom:calc(50% - 205px);
   left:50%;
   transform:translateX(-50%);
   z-index:150;
@@ -225,8 +225,8 @@ canvas{position:fixed;inset:0;z-index:0}
 }
 .overlay iframe{
   width:90%;
-  max-width:800px;
-  height:450px;
+  max-width:1600px;
+  height:900px;
   border-radius:12px;
   border:2px solid #a855f7;
   box-shadow:0 0 30px #a855f7,0 0 60px rgba(168,85,247,.6);
@@ -256,12 +256,16 @@ canvas{position:fixed;inset:0;z-index:0}
   .hover-popup img{
     width:calc(50% - 6px);
   }
+  .overlay iframe {
+    width: 95%;
+    height: 500px;
+  }
 }
 
 @media (max-width: 480px) {
   .card { 
-    padding: 30px 25px;
-    min-height:470px;
+    padding: 30px 25px 10px 25px;
+    min-height:465px;
   }
   .title { 
     font-size: 28px; 
@@ -288,7 +292,7 @@ canvas{position:fixed;inset:0;z-index:0}
     height: 250px;
   }
   .highlight-container{
-    bottom:calc(50% - 190px);
+    bottom:calc(50% - 185px);
   }
 }
 </style>
@@ -319,7 +323,7 @@ canvas{position:fixed;inset:0;z-index:0}
     </div>
 
     <!-- BOŞ ALAN - YouTube simgesi için yer tutucu -->
-    <div style="height:50px"></div>
+    <div style="height:40px"></div>
 
   </div>
 </div>
