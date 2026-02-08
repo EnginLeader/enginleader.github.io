@@ -6,8 +6,8 @@
 
 <title>EnginLeader</title>
 
-<!-- CYBERPUNK FONTLAR -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+<!-- DAHA KÖŞELİ CYBERPUNK FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Teko:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
 
@@ -20,15 +20,15 @@
 
 /* BODY */
 body{
-  background:#0b0b0b;
   height:100vh;
+  background:#050505;
   overflow:hidden;
 
   display:flex;
   justify-content:center;
   align-items:center;
 
-  font-family:'Rajdhani', sans-serif;
+  font-family:'Teko', sans-serif;
   color:white;
 }
 
@@ -39,90 +39,157 @@ canvas{
   z-index:0;
 }
 
-/* ANA PANEL */
+/* ===== GLASSMORPH CARD ===== */
 .card{
   position:relative;
   z-index:2;
 
-  padding:40px;
-
-  background:rgba(15,15,15,0.95);
-
-  border-radius:20px;
-
+  padding:45px 40px;
   text-align:center;
 
-  border:1px solid #2b2b2b;
+  backdrop-filter: blur(14px);
+  background:rgba(20,20,20,.55);
 
-  box-shadow:
-    0 0 25px #a855f7,
-    0 0 60px rgba(168,85,247,.25);
+  border-radius:22px;
+
+  border:2px solid transparent;
+
+  background-clip:padding-box;
+
 }
 
-/* PROFIL */
+/* GRADIENT NEON BORDER */
+.card::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+
+  border-radius:24px;
+
+  background:linear-gradient(45deg,#a855f7,#9333ea,#7e22ce,#a855f7);
+
+  z-index:-1;
+
+  filter:blur(8px);
+
+  animation:borderGlow 4s linear infinite;
+}
+
+@keyframes borderGlow{
+  0%{filter:blur(6px) hue-rotate(0deg);}
+  100%{filter:blur(6px) hue-rotate(360deg);}
+}
+
+/* PROFİL */
 .avatar{
-  width:130px;
-  height:130px;
+  width:135px;
+  height:135px;
   border-radius:50%;
   object-fit:cover;
 
   border:3px solid #a855f7;
-  box-shadow:0 0 20px #a855f7;
 
-  margin-bottom:20px;
+  box-shadow:0 0 30px #a855f7;
+
+  margin-bottom:25px;
 }
 
-/* BAŞLIK (CYBERPUNK) */
+/* ===== GLITCH BAŞLIK ===== */
 .title{
   font-family:'Orbitron', sans-serif;
 
-  font-size:34px;
-  font-weight:800;
-  letter-spacing:3px;
+  font-size:38px;
+  letter-spacing:4px;
+  font-weight:900;
 
-  margin-bottom:25px;
+  position:relative;
 
-  color:#e9d5ff;
+  color:#fff;
 
-  text-shadow:
-    0 0 10px #a855f7,
-    0 0 25px #9333ea,
-    0 0 40px #7e22ce;
+  margin-bottom:30px;
+
+  animation:flicker 2s infinite;
 }
 
-/* LINK KARTLAR */
+@keyframes flicker{
+  0%,18%,22%,25%,53%,57%,100%{
+    text-shadow:
+      0 0 8px #a855f7,
+      0 0 25px #9333ea,
+      0 0 50px #7e22ce;
+  }
+  20%,24%,55%{
+    text-shadow:none;
+  }
+}
+
+/* glitch katman */
+.title::before,
+.title::after{
+  content:"EnginLeader";
+  position:absolute;
+  left:0;
+  width:100%;
+  overflow:hidden;
+}
+
+.title::before{
+  color:#ff00ff;
+  animation:glitch1 2s infinite;
+}
+
+.title::after{
+  color:#00ffff;
+  animation:glitch2 2s infinite;
+}
+
+@keyframes glitch1{
+  0%{transform:translate(0)}
+  20%{transform:translate(-2px,-2px)}
+  40%{transform:translate(2px,2px)}
+  60%{transform:translate(-1px,1px)}
+  80%{transform:translate(1px,-1px)}
+  100%{transform:translate(0)}
+}
+
+@keyframes glitch2{
+  0%{transform:translate(0)}
+  25%{transform:translate(2px,-2px)}
+  50%{transform:translate(-2px,2px)}
+  75%{transform:translate(1px,1px)}
+  100%{transform:translate(0)}
+}
+
+/* ===== LINK KARTLAR ===== */
 .link{
   display:inline-block;
 
+  padding:10px 30px;
   margin:8px 0;
-  padding:11px 26px;
 
-  background:#1b1b1b;
+  border-radius:14px;
 
-  border:1px solid #333;
+  background:rgba(40,40,40,.6);
 
-  border-radius:12px;
+  border:1px solid rgba(255,255,255,.05);
 
-  font-family:'Rajdhani', sans-serif;
-  font-size:18px;
-  font-weight:700;
+  font-size:20px;
   letter-spacing:1px;
 
-  color:#e5e5e5;
-
   text-decoration:none;
+  color:#eee;
 
   transition:.25s;
 }
 
+/* glow animasyonu */
 .link:hover{
-  color:#d8b4fe;
-
-  border-color:#a855f7;
+  color:#fff;
 
   box-shadow:
     0 0 10px #a855f7,
-    0 0 25px #a855f7;
+    0 0 25px #a855f7,
+    0 0 45px #9333ea;
 
   transform:scale(1.08);
 }
@@ -152,36 +219,34 @@ canvas{
 
 <script>
 /* MATRIX ENGİNLEADER */
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
 
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
+canvas.height=innerHeight;
+canvas.width=innerWidth;
 
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+const text="enginleader";
+const size=18;
+const columns=canvas.width/size;
 
-const text = "enginleader";
-const fontSize = 18;
-const columns = canvas.width / fontSize;
-
-const drops = [];
+const drops=[];
 
 for(let i=0;i<columns;i++) drops[i]=1;
 
 function draw(){
-  ctx.fillStyle="rgba(0,0,0,0.06)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
+ ctx.fillStyle="rgba(0,0,0,0.06)";
+ ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  ctx.fillStyle="#a855f7";
-  ctx.font = fontSize+"px monospace";
+ ctx.fillStyle="#a855f7";
+ ctx.font=size+"px monospace";
 
-  for(let i=0;i<drops.length;i++){
-    const char=text[Math.floor(Math.random()*text.length)];
-    ctx.fillText(char,i*fontSize,drops[i]*fontSize);
+ for(let i=0;i<drops.length;i++){
+  const char=text[Math.floor(Math.random()*text.length)];
+  ctx.fillText(char,i*size,drops[i]*size);
 
-    if(drops[i]*fontSize>canvas.height && Math.random()>0.975) drops[i]=0;
-
-    drops[i]++;
-  }
+  if(drops[i]*size>canvas.height && Math.random()>0.975) drops[i]=0;
+  drops[i]++;
+ }
 }
 
 setInterval(draw,35);
