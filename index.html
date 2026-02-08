@@ -48,14 +48,18 @@ canvas{position:fixed;inset:0;z-index:0}
 /* ANA KART */
 .card{
   position:relative;
-  padding:45px 50px 40px 50px;
+  padding:45px 50px 25px 50px;
   width:95%;
   max-width:520px;
+  min-height:580px;
   background:rgba(15,15,15,0.92);
   border-radius:22px;
   text-align:center;
   border:1px solid #2b2b2b;
   box-shadow:0 0 25px #a855f7,0 0 60px rgba(168,85,247,.25);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
 
 /* PROFIL */
@@ -109,21 +113,11 @@ canvas{position:fixed;inset:0;z-index:0}
 /* HIGHLIGHT CONTAINER - Blur wrapper'ın dışında */
 .highlight-container{
   position:fixed;
-  bottom:calc(50% - 290px);
+  bottom:calc(50% - 260px);
   left:50%;
   transform:translateX(-50%);
   z-index:150;
   display:inline-block;
-}
-
-/* HIGHLIGHT - Placeholder card içinde */
-.highlight-placeholder{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  margin-bottom:0;
 }
 
 /* HIGHLIGHT */
@@ -266,7 +260,8 @@ canvas{position:fixed;inset:0;z-index:0}
 
 @media (max-width: 480px) {
   .card { 
-    padding: 30px 25px 35px 25px;
+    padding: 30px 25px;
+    min-height:520px;
   }
   .title { 
     font-size: 28px; 
@@ -293,7 +288,7 @@ canvas{position:fixed;inset:0;z-index:0}
     height: 250px;
   }
   .highlight-container{
-    bottom:calc(50% - 225px);
+    bottom:calc(50% - 230px);
   }
 }
 </style>
@@ -307,25 +302,24 @@ canvas{position:fixed;inset:0;z-index:0}
 <div class="blur-wrapper" id="blurWrapper">
   <div class="card" id="mainCard">
 
-    <img src="1770549952621.png" alt="EnginLeader Profil Fotoğrafı" class="avatar">
+    <div>
+      <img src="1770549952621.png" alt="EnginLeader Profil Fotoğrafı" class="avatar">
 
-    <div class="title">EnginLeader</div>
+      <div class="title">EnginLeader</div>
 
-    <!-- İKONLAR -->
-    <div class="links">
-      <a href="https://steamcommunity.com/id/engomi97/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Steam Profilim"><i class="fa-brands fa-steam"></i></a>
-      <a href="https://discord.gg/fRwmjzJaDy" class="link" target="_blank" rel="noopener noreferrer" aria-label="Discord Sunucum"><i class="fa-brands fa-discord"></i></a>
-      <a href="https://www.twitch.tv/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Twitch Kanalım"><i class="fa-brands fa-twitch"></i></a>
-      <a href="https://kick.com/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Kick Kanalım"><i class="fa-brands fa-kickstarter-k"></i></a>
-      <a href="https://www.youtube.com/@enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="YouTube Kanalım"><i class="fa-brands fa-youtube"></i></a>
-      <a href="https://www.instagram.com/enginleader/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profilim"><i class="fa-brands fa-instagram"></i></a>
+      <!-- İKONLAR -->
+      <div class="links">
+        <a href="https://steamcommunity.com/id/engomi97/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Steam Profilim"><i class="fa-brands fa-steam"></i></a>
+        <a href="https://discord.gg/fRwmjzJaDy" class="link" target="_blank" rel="noopener noreferrer" aria-label="Discord Sunucum"><i class="fa-brands fa-discord"></i></a>
+        <a href="https://www.twitch.tv/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Twitch Kanalım"><i class="fa-brands fa-twitch"></i></a>
+        <a href="https://kick.com/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Kick Kanalım"><i class="fa-brands fa-kickstarter-k"></i></a>
+        <a href="https://www.youtube.com/@enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="YouTube Kanalım"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.instagram.com/enginleader/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profilim"><i class="fa-brands fa-instagram"></i></a>
+      </div>
     </div>
 
-    <!-- PLACEHOLDER YOUTUBE SIMGE - Card içinde yer tutuyor -->
-    <div class="highlight-placeholder">
-      <i class="fa-brands fa-youtube"></i>
-      <span>Youtube</span>
-    </div>
+    <!-- BOŞ ALAN - YouTube simgesi için yer tutucu -->
+    <div style="height:100px"></div>
 
   </div>
 </div>
