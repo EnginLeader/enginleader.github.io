@@ -6,6 +6,7 @@
 <title>EnginLeader</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Oxanium:wght@400;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
 
 <style>
@@ -28,10 +29,26 @@ body{
 /* MATRIX */
 canvas{position:fixed;inset:0;z-index:0}
 
+/* BLUR WRAPPER - Sadece canvas ve card için */
+.blur-wrapper{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px 0;
+  transition:filter 0.3s;
+}
+
+.blur-wrapper.blur{
+  filter:blur(5px);
+}
+
 /* ANA KART */
 .card{
   position:relative;
-  padding:45px 50px 45px 50px;
+  padding:45px 50px 15px 50px;
   width:95%;
   max-width:520px;
   min-height:520px;
@@ -42,14 +59,14 @@ canvas{position:fixed;inset:0;z-index:0}
   box-shadow:0 0 25px #a855f7,0 0 60px rgba(168,85,247,.25);
   display:flex;
   flex-direction:column;
-  justify-content:flex-start;
+  justify-content:space-between;
 }
 
-/* PROFIL (DİKDÖRTGEN OVAL) */
+/* PROFIL */
 .avatar{
-  width:150px;
-  height:150px;
-  border-radius:22px;
+  width:130px;
+  height:130px;
+  border-radius:50%;
   object-fit:cover;
   border:3px solid #a855f7;
   box-shadow:0 0 20px #a855f7;
@@ -70,8 +87,8 @@ canvas{position:fixed;inset:0;z-index:0}
   display:flex;
   gap:12px;
   justify-content:center;
-  flex-wrap:wrap;
   margin-bottom:25px;
+  flex-wrap:wrap;
 }
 
 .link{
@@ -93,18 +110,26 @@ canvas{position:fixed;inset:0;z-index:0}
   transform:scale(1.1);
 }
 
-/* YOUTUBE HIGHLIGHT - ANA KART İÇİ */
-.youtube-highlight{
+/* HIGHLIGHT CONTAINER - Blur wrapper'ın dışında, YouTube ikonunu 15px aşağı çekildi */
+.highlight-container{
+  position:fixed;
+  bottom:calc(50% - 190px); /* Önceki 205px idi, 15px aşağı çekildi */
+  left:50%;
+  transform:translateX(-50%);
+  z-index:150;
+  display:inline-block;
+}
+
+/* HIGHLIGHT */
+.highlight{
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   cursor:pointer;
   gap:6px;
-  margin-top:20px;
-  position:relative; /* popup ile ilişkilendir */
 }
-.youtube-highlight i{
+.highlight i{
   font-size:52px;
   color:#a855f7;
   border:1px solid #a855f7;
@@ -113,11 +138,11 @@ canvas{position:fixed;inset:0;z-index:0}
   background:#1b1b1b;
   transition:.3s;
 }
-.youtube-highlight i:hover{
+.highlight i:hover{
   box-shadow:0 0 20px #a855f7;
   transform:scale(1.1);
 }
-.youtube-highlight span{
+.highlight span{
   font-size:14px;
   letter-spacing:1px;
   color:#a855f7;
@@ -125,29 +150,32 @@ canvas{position:fixed;inset:0;z-index:0}
 
 /* HOVER POPUP */
 .hover-popup{
-  position:absolute;
-  bottom:70px; /* youtube simgesinin üstünde */
+  position:fixed;
+  top:50%;
   left:50%;
-  transform:translateX(-50%);
+  transform:translate(-50%, -50%) translateY(-80px);
   background:rgba(10,10,10,0.98);
   border:2px solid #a855f7;
   border-radius:15px;
-  padding:20px;
+  padding:25px;
   opacity:0;
   visibility:hidden;
   display:flex;
   justify-content:center;
   gap:20px;
   box-shadow:0 0 40px #a855f7,0 0 80px rgba(168,85,247,.7);
-  z-index:10;
-  pointer-events:none;
+  z-index:200;
   transition:opacity 0.3s, visibility 0.3s;
+  pointer-events:none;
+  min-width:1380px;
 }
+
 .hover-popup.show{
   opacity:1;
   visibility:visible;
   pointer-events:auto;
 }
+
 .hover-popup img{
   width:320px;
   height:180px;
@@ -162,6 +190,23 @@ canvas{position:fixed;inset:0;z-index:0}
   border-color:#a855f7;
   transform:scale(1.05);
   box-shadow:0 0 20px #a855f7;
+}
+
+/* ARKA PLAN KARAR EFEKTİ */
+.hover-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  z-index:100;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 0.3s, visibility 0.3s;
+  pointer-events:none;
+}
+
+.hover-backdrop.active{
+  opacity:1;
+  visibility:visible;
 }
 
 /* POPUP OVERLAY */
@@ -187,22 +232,67 @@ canvas{position:fixed;inset:0;z-index:0}
   box-shadow:0 0 30px #a855f7,0 0 60px rgba(168,85,247,.6);
 }
 
-/* MOBİL */
-@media (max-width: 480px) {
-  .avatar { 
-    width:120px; 
-    height:120px; 
+/* MOBİL UYUMLULUK */
+@media (max-width: 1400px) {
+  .hover-popup{
+    min-width:auto;
+    max-width:95vw;
+    flex-wrap:wrap;
+    gap:15px;
+    padding:20px;
   }
-  .youtube-highlight i{
-    font-size:46px;
+  .hover-popup img{
+    width:calc(50% - 8px);
+    height:auto;
+    aspect-ratio:16/9;
+  }
+}
+
+@media (max-width: 768px) {
+  .hover-popup{
+    gap:12px;
     padding:15px;
   }
   .hover-popup img{
     width:calc(50% - 6px);
-    height:auto;
   }
   .overlay iframe {
-    height:250px;
+    width: 95%;
+    height: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card { 
+    padding: 30px 25px 10px 25px;
+    min-height:465px;
+  }
+  .title { 
+    font-size: 28px; 
+    letter-spacing: 2px;
+  }
+  .avatar { 
+    width: 100px; 
+    height: 100px; 
+  }
+  .links {
+    gap: 10px;
+  }
+  .link {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+  .highlight i {
+    font-size: 46px;
+    padding: 15px;
+  }
+  .overlay iframe {
+    width: 95%;
+    height: 250px;
+  }
+  .highlight-container{
+    bottom:calc(50% - 175px); /* Mobilde de 15px aşağı çekildi */
   }
 }
 </style>
@@ -212,118 +302,190 @@ canvas{position:fixed;inset:0;z-index:0}
 
 <canvas id="matrix"></canvas>
 
-<div class="card" id="mainCard">
+<div class="blur-wrapper" id="blurWrapper">
+  <div class="card" id="mainCard">
 
-  <img src="1770549952621.png" alt="EnginLeader Profil Fotoğrafı" class="avatar">
-  <div class="title">EnginLeader</div>
+    <div>
+      <img src="1770549952621.png" alt="EnginLeader Profil Fotoğrafı" class="avatar">
 
-  <!-- İKONLAR -->
-  <div class="links">
-    <a href="https://steamcommunity.com/id/engomi97/" class="link" target="_blank"><i class="fa-brands fa-steam"></i></a>
-    <a href="https://discord.gg/fRwmjzJaDy" class="link" target="_blank"><i class="fa-brands fa-discord"></i></a>
-    <a href="https://www.twitch.tv/enginleader" class="link" target="_blank"><i class="fa-brands fa-twitch"></i></a>
-    <a href="https://kick.com/enginleader" class="link" target="_blank"><i class="fa-brands fa-kickstarter-k"></i></a>
-    <a href="https://www.youtube.com/@enginleader" class="link" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-    <a href="https://www.instagram.com/enginleader/" class="link" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-  </div>
+      <div class="title">EnginLeader</div>
 
-  <!-- YOUTUBE HIGHLIGHT -->
-  <div class="youtube-highlight" id="highlightBtn">
-    <i class="fa-brands fa-youtube"></i>
-    <span>Youtube</span>
-    <div class="hover-popup" id="hoverPopup">
-      <img src="https://img.youtube.com/vi/mcgwul5InXc/mqdefault.jpg" data-video="mcgwul5InXc">
-      <img src="https://img.youtube.com/vi/VIjytDcMfJg/mqdefault.jpg" data-video="VIjytDcMfJg">
-      <img src="https://img.youtube.com/vi/bo9C5NHkBDA/mqdefault.jpg" data-video="bo9C5NHkBDA">
-      <img src="https://img.youtube.com/vi/sCJuhORPpoE/mqdefault.jpg" data-video="sCJuhORPpoE">
+      <!-- İKONLAR -->
+      <div class="links">
+        <a href="https://steamcommunity.com/id/engomi97/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Steam Profilim"><i class="fa-brands fa-steam"></i></a>
+        <a href="https://discord.gg/fRwmjzJaDy" class="link" target="_blank" rel="noopener noreferrer" aria-label="Discord Sunucum"><i class="fa-brands fa-discord"></i></a>
+        <a href="https://www.twitch.tv/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Twitch Kanalım"><i class="fa-brands fa-twitch"></i></a>
+        <a href="https://kick.com/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Kick Kanalım"><i class="fa-brands fa-kickstarter-k"></i></a>
+        <a href="https://www.youtube.com/@enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="YouTube Kanalım"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.instagram.com/enginleader/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profilim"><i class="fa-brands fa-instagram"></i></a>
+      </div>
     </div>
-  </div>
 
+    <!-- BOŞ ALAN - YouTube simgesi için yer tutucu -->
+    <div style="height:40px"></div>
+
+  </div>
 </div>
 
+<!-- HIGHLIGHT YOUTUBE SIMGE -->
+<div class="highlight-container">
+  <div class="highlight" id="highlightBtn">
+    <i class="fa-brands fa-youtube"></i>
+    <span>Youtube</span>
+  </div>
+</div>
+
+<!-- HOVER POPUP -->
+<div class="hover-popup" id="hoverPopup">
+  <img src="https://img.youtube.com/vi/mcgwul5InXc/mqdefault.jpg" alt="Video 1" data-video="mcgwul5InXc">
+  <img src="https://img.youtube.com/vi/VIjytDcMfJg/mqdefault.jpg" alt="Video 2" data-video="VIjytDcMfJg">
+  <img src="https://img.youtube.com/vi/bo9C5NHkBDA/mqdefault.jpg" alt="Video 3" data-video="bo9C5NHkBDA">
+  <img src="https://img.youtube.com/vi/sCJuhORPpoE/mqdefault.jpg" alt="Video 4" data-video="sCJuhORPpoE">
+</div>
+
+<!-- ARKA PLAN KARAR EFEKTİ -->
+<div class="hover-backdrop" id="hoverBackdrop"></div>
+
+<!-- POPUP OVERLAY -->
 <div class="overlay" id="overlay">
-  <iframe id="videoFrame" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe id="videoFrame" src="" title="YouTube Video" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
 <script>
-/* MATRIX CANVAS */
+/* MATRIX CANVAS SETUP */
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
-function resizeCanvas(){
-  canvas.width = window.innerWidth;
+function resizeCanvas() {
   canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
 }
 resizeCanvas();
+
 window.addEventListener('resize', resizeCanvas);
 
-const text="enginleader";
-const fontSize=18;
-let columns=Math.floor(canvas.width/fontSize);
-let drops=[];
+const text = "enginleader";
+const fontSize = 18;
+let columns = Math.floor(canvas.width / fontSize);
+let drops = [];
 
-for(let i=0;i<columns;i++) drops[i]=1;
-
-function draw(){
-  ctx.fillStyle="rgba(0,0,0,0.06)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="#a855f7";
-  ctx.font=fontSize+"px monospace";
-  for(let i=0;i<drops.length;i++){
-    const char=text[Math.floor(Math.random()*text.length)];
-    ctx.fillText(char,i*fontSize,drops[i]*fontSize);
-    if(drops[i]*fontSize>canvas.height && Math.random()>0.975) drops[i]=0;
-    drops[i]++;
+function initDrops() {
+  columns = Math.floor(canvas.width / fontSize);
+  drops = [];
+  for(let i = 0; i < columns; i++) {
+    drops[i] = 1;
   }
 }
-setInterval(draw,35);
+initDrops();
 
-/* HOVER POPUP */
+window.addEventListener('resize', initDrops);
+
+/* MATRIX ANİMASYONU */
+let lastTime = 0;
+const interval = 35;
+
+function draw(currentTime) {
+  if (currentTime - lastTime >= interval) {
+    ctx.fillStyle = "rgba(0,0,0,0.06)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#a855f7";
+    ctx.font = fontSize + "px monospace";
+    
+    for(let i = 0; i < drops.length; i++) {
+      const char = text[Math.floor(Math.random() * text.length)];
+      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+      
+      if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+    
+    lastTime = currentTime;
+  }
+  
+  requestAnimationFrame(draw);
+}
+
+requestAnimationFrame(draw);
+
+/* HOVER POPUP SİSTEMİ */
 const highlightBtn = document.getElementById('highlightBtn');
 const hoverPopup = document.getElementById('hoverPopup');
+const hoverBackdrop = document.getElementById('hoverBackdrop');
+const blurWrapper = document.getElementById('blurWrapper');
+
+let isHoveringButton = false;
+let isHoveringPopup = false;
+
+function showPopup() {
+  hoverPopup.classList.add('show');
+  hoverBackdrop.classList.add('active');
+  blurWrapper.classList.add('blur');
+}
+
+function hidePopup() {
+  if (!isHoveringButton && !isHoveringPopup) {
+    hoverPopup.classList.remove('show');
+    hoverBackdrop.classList.remove('active');
+    blurWrapper.classList.remove('blur');
+  }
+}
 
 highlightBtn.addEventListener('mouseenter', () => {
-  hoverPopup.classList.add('show');
+  isHoveringButton = true;
+  showPopup();
 });
-highlightBtn.addEventListener('mouseleave', () => {
-  setTimeout(()=>{
-    if(!hoverPopup.matches(':hover')){
-      hoverPopup.classList.remove('show');
-    }
-  },50);
-});
-hoverPopup.addEventListener('mouseleave', ()=>hoverPopup.classList.remove('show'));
 
-/* VIDEO POPUP */
+highlightBtn.addEventListener('mouseleave', () => {
+  isHoveringButton = false;
+  setTimeout(hidePopup, 100);
+});
+
+hoverPopup.addEventListener('mouseenter', () => {
+  isHoveringPopup = true;
+});
+
+hoverPopup.addEventListener('mouseleave', () => {
+  isHoveringPopup = false;
+  setTimeout(hidePopup, 100);
+});
+
+/* VIDEO POPUP SİSTEMİ */
 const overlay = document.getElementById("overlay");
 const videoFrame = document.getElementById("videoFrame");
 const videoThumbnails = document.querySelectorAll('.hover-popup img');
 
-videoThumbnails.forEach(thumbnail=>{
-  thumbnail.addEventListener('click', e=>{
+videoThumbnails.forEach(thumbnail => {
+  thumbnail.addEventListener('click', (e) => {
     e.stopPropagation();
-    const videoId=thumbnail.getAttribute('data-video');
-    videoFrame.src=`https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1`;
-    overlay.style.display="flex";
-    document.body.style.overflow="hidden";
+    const videoId = thumbnail.getAttribute('data-video');
+    videoFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1`;
+    overlay.style.display = "flex";
+    document.body.style.overflow = "hidden";
+    hoverPopup.classList.remove('show');
+    hoverBackdrop.classList.remove('active');
+    blurWrapper.classList.remove('blur');
   });
 });
 
-overlay.addEventListener('click', e=>{
-  if(e.target === overlay){
-    overlay.style.display="none";
-    videoFrame.src="";
-    document.body.style.overflow="auto";
+overlay.addEventListener('click', (e) => {
+  if(e.target === overlay) {
+    closeOverlay();
   }
 });
 
-document.addEventListener('keydown', e=>{
-  if(e.key==='Escape' && overlay.style.display==="flex"){
-    overlay.style.display="none";
-    videoFrame.src="";
-    document.body.style.overflow="auto";
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && overlay.style.display === 'flex') {
+    closeOverlay();
   }
 });
+
+function closeOverlay() {
+  overlay.style.display = "none";
+  videoFrame.src = "";
+  document.body.style.overflow = "auto";
+}
 </script>
 
 </body>
