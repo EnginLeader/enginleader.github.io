@@ -62,11 +62,11 @@ canvas{position:fixed;inset:0;z-index:0}
   justify-content:space-between;
 }
 
-/* PROFIL */
+/* PROFIL - DİKDÖRTGEN VE OVAL KENARLI */
 .avatar{
-  width:130px;
+  width:180px;
   height:130px;
-  border-radius:50%;
+  border-radius:22px;
   object-fit:cover;
   border:3px solid #a855f7;
   box-shadow:0 0 20px #a855f7;
@@ -110,10 +110,10 @@ canvas{position:fixed;inset:0;z-index:0}
   transform:scale(1.1);
 }
 
-/* HIGHLIGHT CONTAINER - Blur wrapper'ın dışında, YouTube ikonunu 15px aşağı çekildi */
+/* HIGHLIGHT CONTAINER - Kartın tam altında, simetrik konumlandırma */
 .highlight-container{
   position:fixed;
-  bottom:calc(50% - 190px); /* Önceki 205px idi, 15px aşağı çekildi */
+  bottom:calc(50% - 310px);
   left:50%;
   transform:translateX(-50%);
   z-index:150;
@@ -272,7 +272,7 @@ canvas{position:fixed;inset:0;z-index:0}
     letter-spacing: 2px;
   }
   .avatar { 
-    width: 100px; 
+    width: 140px; 
     height: 100px; 
   }
   .links {
@@ -292,7 +292,7 @@ canvas{position:fixed;inset:0;z-index:0}
     height: 250px;
   }
   .highlight-container{
-    bottom:calc(50% - 175px); /* Mobilde de 15px aşağı çekildi */
+    bottom:calc(50% - 280px);
   }
 }
 </style>
@@ -322,7 +322,7 @@ canvas{position:fixed;inset:0;z-index:0}
     </div>
 
     <!-- BOŞ ALAN - YouTube simgesi için yer tutucu -->
-    <div style="height:40px"></div>
+    <div style="height:80px"></div>
 
   </div>
 </div>
