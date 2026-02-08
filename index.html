@@ -128,47 +128,63 @@ canvas{position:fixed;inset:0;z-index:0}
   bottom:110%;
   left:50%;
   transform:translateX(-50%);
-  background:rgba(15,15,15,0.98);
-  border:1px solid #a855f7;
-  border-radius:12px;
-  padding:15px;
+  background:rgba(10,10,10,0.98);
+  border:2px solid #a855f7;
+  border-radius:15px;
+  padding:20px;
   display:none;
-  gap:10px;
+  justify-content:center;
+  gap:15px;
   flex-wrap:wrap;
-  box-shadow:0 0 20px #a855f7,0 0 40px rgba(168,85,247,.4);
+  box-shadow:0 0 30px #a855f7,0 0 60px rgba(168,85,247,.6);
   z-index:100;
-  width:320px;
-  max-width:90vw;
+  width:440px;
+  max-width:95vw;
 }
 .hover-popup::after{
   content:'';
   position:absolute;
-  bottom:-10px;
+  bottom:-12px;
   left:50%;
   transform:translateX(-50%);
   width:0;
   height:0;
-  border-left:10px solid transparent;
-  border-right:10px solid transparent;
-  border-top:10px solid #a855f7;
+  border-left:12px solid transparent;
+  border-right:12px solid transparent;
+  border-top:12px solid #a855f7;
 }
 .hover-popup img{
-  width:145px;
-  height:82px;
-  border-radius:8px;
+  width:200px;
+  height:113px;
+  border-radius:10px;
   cursor:pointer;
-  border:2px solid #333;
-  transition:.25s;
+  border:2px solid #444;
+  transition:.3s;
   object-fit:cover;
 }
 .hover-popup img:hover{
   border-color:#a855f7;
-  transform:scale(1.05);
-  box-shadow:0 0 10px #a855f7;
+  transform:scale(1.08);
+  box-shadow:0 0 15px #a855f7;
 }
 
 .highlight:hover .hover-popup{
   display:flex;
+}
+
+/* ARKA PLAN KARAR EFEKTI */
+.hover-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.7);
+  z-index:50;
+  display:none;
+  backdrop-filter:blur(3px);
+}
+
+.highlight:hover ~ .hover-backdrop,
+.hover-backdrop.active{
+  display:block;
 }
 
 /* POPUP OVERLAY */
@@ -220,15 +236,26 @@ canvas{position:fixed;inset:0;z-index:0}
     padding: 15px;
   }
   .hover-popup{
-    width:280px;
+    width:340px;
+    padding:15px;
   }
   .hover-popup img{
-    width:130px;
-    height:73px;
+    width:150px;
+    height:85px;
   }
   .overlay iframe {
     width: 95%;
     height: 250px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hover-popup{
+    width:300px;
+  }
+  .hover-popup img{
+    width:130px;
+    height:73px;
   }
 }
 </style>
@@ -269,6 +296,9 @@ canvas{position:fixed;inset:0;z-index:0}
   </div>
 
 </div>
+
+<!-- ARKA PLAN KARAR EFEKTİ -->
+<div class="hover-backdrop" id="hoverBackdrop"></div>
 
 <!-- POPUP OVERLAY -->
 <div class="overlay" id="overlay">
@@ -333,6 +363,18 @@ function draw(currentTime) {
 
 requestAnimationFrame(draw);
 
+/* HOVER BACKDROP SİSTEMİ */
+const highlightBtn = document.getElementById('highlightBtn');
+const hoverBackdrop = document.getElementById('hoverBackdrop');
+
+highlightBtn.addEventListener('mouseenter', () => {
+  hoverBackdrop.classList.add('active');
+});
+
+highlightBtn.addEventListener('mouseleave', () => {
+  hoverBackdrop.classList.remove('active');
+});
+
 /* VIDEO POPUP SİSTEMİ */
 const overlay = document.getElementById("overlay");
 const videoFrame = document.getElementById("videoFrame");
@@ -346,6 +388,7 @@ videoThumbnails.forEach(thumbnail => {
     videoFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1`;
     overlay.style.display = "flex";
     document.body.style.overflow = "hidden";
+    hoverBackdrop.classList.remove('active');
   });
 });
 
