@@ -6,7 +6,6 @@
 
 <title>EnginLeader</title>
 
-<!-- CYBERPUNK FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Teko:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
@@ -38,7 +37,7 @@ canvas{
   z-index:0;
 }
 
-/* ===== MOUSE NEON LIGHT ===== */
+/* ===== MOUSE NEON ===== */
 .cursor-glow{
   position:fixed;
   width:350px;
@@ -50,7 +49,7 @@ canvas{
   z-index:1;
 }
 
-/* ===== ANA PANEL ===== */
+/* ===== ANA KART ===== */
 .card{
   position:relative;
   z-index:2;
@@ -58,20 +57,21 @@ canvas{
   padding:45px 40px;
 
   backdrop-filter:blur(14px);
-  background:rgba(20,20,20,.65);
+  background:rgba(20,20,20,.60);
 
   border-radius:22px;
 
+  /* 🔥 SABİT MOR BORDER */
   border:2px solid #a855f7;
 
-  box-shadow:0 0 30px rgba(168,85,247,.35);
+  /* hafif neon glow */
+  box-shadow:0 0 25px rgba(168,85,247,.25);
 
   text-align:center;
 
-  /* açılış animasyonu */
-  animation:enter .9s ease forwards;
+  animation:enter .8s ease forwards;
   opacity:0;
-  transform:scale(.85);
+  transform:scale(.9);
 }
 
 @keyframes enter{
@@ -81,7 +81,7 @@ canvas{
   }
 }
 
-/* PROFIL */
+/* PROFİL */
 .avatar{
   width:135px;
   height:135px;
@@ -89,7 +89,7 @@ canvas{
   object-fit:cover;
 
   border:3px solid #a855f7;
-  box-shadow:0 0 25px #a855f7;
+  box-shadow:0 0 20px #a855f7;
 
   margin-bottom:25px;
 }
@@ -110,16 +110,15 @@ canvas{
     0 0 8px #a855f7,
     0 0 20px #9333ea;
 
-  /* hafif glitch */
   animation:glitch .12s infinite alternate;
 }
 
 @keyframes glitch{
   from{transform:translate(0)}
-  to{transform:translate(.7px,-.7px)}
+  to{transform:translate(.6px,-.6px)}
 }
 
-/* ===== LINK KARTLAR ===== */
+/* ===== LINKLER ===== */
 .link{
   display:inline-block;
 
@@ -176,7 +175,7 @@ canvas{
 
 
 <script>
-/* ===== MATRIX ===== */
+/* MATRIX */
 const canvas=document.querySelector("canvas");
 const ctx=canvas.getContext("2d");
 
@@ -206,13 +205,11 @@ function draw(){
   drops[i]++;
  }
 }
-
 setInterval(draw,35);
 
 
-/* ===== MOUSE NEON TAKİP ===== */
+/* MOUSE NEON */
 const glow=document.getElementById("glow");
-
 document.addEventListener("mousemove",e=>{
   glow.style.left=e.clientX+"px";
   glow.style.top=e.clientY+"px";
