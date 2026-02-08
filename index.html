@@ -29,6 +29,20 @@ body{
 /* MATRIX */
 canvas{position:fixed;inset:0;z-index:0}
 
+/* BLUR LAYER - Sadece Matrix için */
+.blur-layer{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  backdrop-filter:blur(0px);
+  transition:backdrop-filter 0.3s;
+}
+
+.blur-layer.active{
+  backdrop-filter:blur(5px);
+}
+
 /* ANA KART */
 .card{
   position:relative;
@@ -40,8 +54,12 @@ canvas{position:fixed;inset:0;z-index:0}
   border-radius:22px;
   text-align:center;
   border:1px solid #2b2b2b;
-  backdrop-filter:blur(10px);
   box-shadow:0 0 25px #a855f7,0 0 60px rgba(168,85,247,.25);
+  transition:filter 0.3s;
+}
+
+.card.blur{
+  filter:blur(5px);
 }
 
 /* PROFIL */
@@ -129,23 +147,23 @@ canvas{position:fixed;inset:0;z-index:0}
 /* HOVER POPUP */
 .hover-popup{
   position:absolute;
-  bottom:calc(100% + 15px);
+  bottom:calc(100% + 20px);
   left:50%;
   transform:translateX(-50%);
   background:rgba(10,10,10,0.98);
   border:2px solid #a855f7;
   border-radius:15px;
-  padding:20px;
+  padding:25px;
   opacity:0;
   visibility:hidden;
   display:flex;
   justify-content:center;
-  gap:15px;
-  box-shadow:0 0 30px #a855f7,0 0 60px rgba(168,85,247,.6);
-  z-index:150;
+  gap:20px;
+  box-shadow:0 0 40px #a855f7,0 0 80px rgba(168,85,247,.7);
+  z-index:200;
   transition:opacity 0.3s, visibility 0.3s;
   pointer-events:none;
-  min-width:680px;
+  min-width:1380px;
 }
 
 .hover-popup.show{
@@ -157,40 +175,39 @@ canvas{position:fixed;inset:0;z-index:0}
 .hover-popup::after{
   content:'';
   position:absolute;
-  bottom:-12px;
+  bottom:-14px;
   left:50%;
   transform:translateX(-50%);
   width:0;
   height:0;
-  border-left:12px solid transparent;
-  border-right:12px solid transparent;
-  border-top:12px solid #a855f7;
+  border-left:14px solid transparent;
+  border-right:14px solid transparent;
+  border-top:14px solid #a855f7;
 }
 .hover-popup img{
-  width:150px;
-  height:85px;
-  border-radius:10px;
+  width:320px;
+  height:180px;
+  border-radius:12px;
   cursor:pointer;
-  border:2px solid #444;
+  border:3px solid #444;
   transition:.3s;
   object-fit:cover;
   flex-shrink:0;
 }
 .hover-popup img:hover{
   border-color:#a855f7;
-  transform:scale(1.08);
-  box-shadow:0 0 15px #a855f7;
+  transform:scale(1.05);
+  box-shadow:0 0 20px #a855f7;
 }
 
 /* ARKA PLAN KARAR EFEKTİ */
 .hover-backdrop{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.7);
+  background:rgba(0,0,0,0.75);
   z-index:100;
   opacity:0;
   visibility:hidden;
-  backdrop-filter:blur(3px);
   transition:opacity 0.3s, visibility 0.3s;
   pointer-events:none;
 }
@@ -224,18 +241,28 @@ canvas{position:fixed;inset:0;z-index:0}
 }
 
 /* MOBİL UYUMLULUK */
-@media (max-width: 768px) {
+@media (max-width: 1400px) {
   .hover-popup{
     min-width:auto;
-    max-width:90vw;
+    max-width:95vw;
     flex-wrap:wrap;
+    gap:15px;
+    padding:20px;
+  }
+  .hover-popup img{
+    width:calc(50% - 8px);
+    height:auto;
+    aspect-ratio:16/9;
+  }
+}
+
+@media (max-width: 768px) {
+  .hover-popup{
     gap:12px;
     padding:15px;
   }
   .hover-popup img{
     width:calc(50% - 6px);
-    height:auto;
-    aspect-ratio:16/9;
   }
 }
 
@@ -275,7 +302,10 @@ canvas{position:fixed;inset:0;z-index:0}
 
 <canvas id="matrix"></canvas>
 
-<div class="card">
+<!-- BLUR LAYER -->
+<div class="blur-layer" id="blurLayer"></div>
+
+<div class="card" id="mainCard">
 
   <img src="1770549952621.png" alt="EnginLeader Profil Fotoğrafı" class="avatar">
 
@@ -380,6 +410,8 @@ const highlightContainer = document.querySelector('.highlight-container');
 const highlightBtn = document.getElementById('highlightBtn');
 const hoverPopup = document.getElementById('hoverPopup');
 const hoverBackdrop = document.getElementById('hoverBackdrop');
+const blurLayer = document.getElementById('blurLayer');
+const mainCard = document.getElementById('mainCard');
 
 let isHoveringButton = false;
 let isHoveringPopup = false;
@@ -387,12 +419,16 @@ let isHoveringPopup = false;
 function showPopup() {
   hoverPopup.classList.add('show');
   hoverBackdrop.classList.add('active');
+  blurLayer.classList.add('active');
+  mainCard.classList.add('blur');
 }
 
 function hidePopup() {
   if (!isHoveringButton && !isHoveringPopup) {
     hoverPopup.classList.remove('show');
     hoverBackdrop.classList.remove('active');
+    blurLayer.classList.remove('active');
+    mainCard.classList.remove('blur');
   }
 }
 
@@ -430,6 +466,8 @@ videoThumbnails.forEach(thumbnail => {
     document.body.style.overflow = "hidden";
     hoverPopup.classList.remove('show');
     hoverBackdrop.classList.remove('active');
+    blurLayer.classList.remove('active');
+    mainCard.classList.remove('blur');
   });
 });
 
