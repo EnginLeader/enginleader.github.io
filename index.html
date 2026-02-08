@@ -1,115 +1,118 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 <title>EnginLeader</title>
 
 <!-- CYBERPUNK FONTLAR -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 
+/* RESET */
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
 }
 
-/* ===== BODY ===== */
+/* BODY */
 body{
   background:#0b0b0b;
+  height:100vh;
   overflow:hidden;
+
   display:flex;
   justify-content:center;
   align-items:center;
-  min-height:100vh;
-  color:white;
+
   font-family:'Rajdhani', sans-serif;
+  color:white;
 }
 
-/* ===== MATRIX ===== */
+/* MATRIX */
 canvas{
   position:fixed;
-  top:0;
-  left:0;
+  inset:0;
   z-index:0;
 }
 
-/* ===== ANA PANEL ===== */
+/* ANA PANEL */
 .card{
   position:relative;
   z-index:2;
 
-  padding:40px 35px;
+  padding:40px;
 
-  background:rgba(15,15,15,0.93);
+  background:rgba(15,15,15,0.95);
 
-  border-radius:22px;
+  border-radius:20px;
 
   text-align:center;
 
-  border:1px solid #2a2a2a;
+  border:1px solid #2b2b2b;
 
   box-shadow:
     0 0 25px #a855f7,
-    0 0 70px rgba(168,85,247,0.25);
+    0 0 60px rgba(168,85,247,.25);
 }
 
-/* ===== PROFİL ===== */
+/* PROFIL */
 .avatar{
-  width:135px;
-  height:135px;
+  width:130px;
+  height:130px;
   border-radius:50%;
   object-fit:cover;
 
   border:3px solid #a855f7;
+  box-shadow:0 0 20px #a855f7;
 
-  box-shadow:0 0 25px #a855f7;
-
-  margin-bottom:22px;
+  margin-bottom:20px;
 }
 
-/* ===== BAŞLIK (CYBERPUNK FONT) ===== */
+/* BAŞLIK (CYBERPUNK) */
 .title{
   font-family:'Orbitron', sans-serif;
 
-  font-size:32px;
+  font-size:34px;
+  font-weight:800;
   letter-spacing:3px;
 
-  margin-bottom:28px;
+  margin-bottom:25px;
 
   color:#e9d5ff;
 
   text-shadow:
-    0 0 8px #a855f7,
+    0 0 10px #a855f7,
     0 0 25px #9333ea,
-    0 0 45px #7e22ce;
+    0 0 40px #7e22ce;
 }
 
-/* ===== LİNK KARTLARI ===== */
+/* LINK KARTLAR */
 .link{
   display:inline-block;
 
+  margin:8px 0;
   padding:11px 26px;
-  margin:9px auto;
-
-  border-radius:12px;
 
   background:#1b1b1b;
 
   border:1px solid #333;
 
-  text-decoration:none;
+  border-radius:12px;
 
   font-family:'Rajdhani', sans-serif;
-  font-weight:600;
   font-size:18px;
+  font-weight:700;
   letter-spacing:1px;
 
   color:#e5e5e5;
 
-  transition:0.25s;
+  text-decoration:none;
+
+  transition:.25s;
 }
 
 .link:hover{
@@ -148,6 +151,8 @@ canvas{
 
 
 <script>
+/* MATRIX ENGİNLEADER */
+
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
@@ -156,8 +161,8 @@ canvas.width = window.innerWidth;
 
 const text = "enginleader";
 const fontSize = 18;
-
 const columns = canvas.width / fontSize;
+
 const drops = [];
 
 for(let i=0;i<columns;i++) drops[i]=1;
@@ -167,15 +172,14 @@ function draw(){
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
   ctx.fillStyle="#a855f7";
-  ctx.font=fontSize+"px monospace";
+  ctx.font = fontSize+"px monospace";
 
   for(let i=0;i<drops.length;i++){
     const char=text[Math.floor(Math.random()*text.length)];
     ctx.fillText(char,i*fontSize,drops[i]*fontSize);
 
-    if(drops[i]*fontSize>canvas.height && Math.random()>0.975){
-      drops[i]=0;
-    }
+    if(drops[i]*fontSize>canvas.height && Math.random()>0.975) drops[i]=0;
+
     drops[i]++;
   }
 }
