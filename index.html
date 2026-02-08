@@ -1,40 +1,112 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EnginLeader</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EnginLeader</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at top, #1a1a1a, #0b0b0b 70%);
-      font-family: Arial, sans-serif;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
 
-    .container {
-      text-align: center;
-      width: 90%;
-      max-width: 400px;
-    }
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    /* PROFİL FOTO */
-    .avatar {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 25px;
-      border: 3px solid #a855f7;
-      box-shadow: 0 0 25px #a855f7;
-    }
+  font-family: Arial, sans-serif;
 
+  /* cyberpunk arka plan */
+  background: linear-gradient(135deg, #0b0b0b, #1a1a1a 40%, #121212);
+  overflow: hidden;
+}
+
+/* ORTADAKİ KART */
+.card {
+  width: 92%;
+  max-width: 380px;
+
+  background: rgba(20,20,20,0.95);
+  border-radius: 22px;
+
+  padding: 35px 25px;
+
+  text-align: center;
+
+  border: 1px solid #2b2b2b;
+
+  box-shadow:
+    0 0 20px #a855f7,
+    0 0 60px rgba(168,85,247,0.25);
+}
+
+/* PROFİL FOTO */
+.avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  margin-bottom: 25px;
+
+  border: 3px solid #a855f7;
+
+  box-shadow:
+    0 0 20px #a855f7,
+    0 0 40px #9333ea;
+}
+
+/* TÜM YAZILARIN ORTAK NEON STİLİ */
+.neonText {
+  color: #e5e5e5;
+  text-decoration: none;
+  display: block;
+  margin: 14px 0;
+  font-size: 18px;
+  transition: 0.25s;
+
+  text-shadow: none;
+}
+
+/* HOVER = EnginLeader ile aynı efekt */
+.neonText:hover {
+  color: #d8b4fe;
+
+  text-shadow:
+    0 0 6px #a855f7,
+    0 0 15px #a855f7,
+    0 0 30px #9333ea;
+
+  transform: scale(1.06);
+}
+
+/* BAŞLIK */
+h1 {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+</style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <img src="1770549952621.png" class="avatar">
+
+    <h1 class="neonText">EnginLeader</h1>
+
+    <a href="#" class="neonText">Kick</a>
+    <a href="#" class="neonText">YouTube</a>
+    <a href="#" class="neonText">Instagram</a>
+    <a href="#" class="neonText">Discord</a>
+    <a href="#" class="neonText">Steam</a>
+
+  </div>
+
+</body>
+</html>
     /* BAŞLIK */
     h1 {
       font-size: 32px;
