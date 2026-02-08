@@ -139,10 +139,10 @@ canvas{position:fixed;inset:0;z-index:0}
 
 /* HOVER POPUP */
 .hover-popup{
-  position:fixed;
-  top:50%;
+  position:absolute; /* simge ile eşleştirmek için absolute */
+  bottom:70px; /* simgeden yukarıya */
   left:50%;
-  transform:translate(-50%, -50%) translateY(-80px);
+  transform:translateX(-50%);
   background:rgba(10,10,10,0.98);
   border:2px solid #a855f7;
   border-radius:15px;
@@ -156,7 +156,6 @@ canvas{position:fixed;inset:0;z-index:0}
   z-index:200;
   transition:opacity 0.3s, visibility 0.3s;
   pointer-events:none;
-  min-width:1380px;
 }
 .hover-popup.show{
   opacity:1;
@@ -245,12 +244,12 @@ canvas{position:fixed;inset:0;z-index:0}
 
       <!-- İKONLAR -->
       <div class="links">
-        <a href="https://steamcommunity.com/id/engomi97/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Steam Profilim"><i class="fa-brands fa-steam"></i></a>
-        <a href="https://discord.gg/fRwmjzJaDy" class="link" target="_blank" rel="noopener noreferrer" aria-label="Discord Sunucum"><i class="fa-brands fa-discord"></i></a>
-        <a href="https://www.twitch.tv/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Twitch Kanalım"><i class="fa-brands fa-twitch"></i></a>
-        <a href="https://kick.com/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Kick Kanalım"><i class="fa-brands fa-kickstarter-k"></i></a>
-        <a href="https://www.youtube.com/@enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="YouTube Kanalım"><i class="fa-brands fa-youtube"></i></a>
-        <a href="https://www.instagram.com/enginleader/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profilim"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://steamcommunity.com/id/engomi97/" class="link" target="_blank"><i class="fa-brands fa-steam"></i></a>
+        <a href="https://discord.gg/fRwmjzJaDy" class="link" target="_blank"><i class="fa-brands fa-discord"></i></a>
+        <a href="https://www.twitch.tv/enginleader" class="link" target="_blank"><i class="fa-brands fa-twitch"></i></a>
+        <a href="https://kick.com/enginleader" class="link" target="_blank"><i class="fa-brands fa-kickstarter-k"></i></a>
+        <a href="https://www.youtube.com/@enginleader" class="link" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.instagram.com/enginleader/" class="link" target="_blank"><i class="fa-brands fa-instagram"></i></a>
       </div>
 
       <!-- YOUTUBE HIGHLIGHT ANA KART İÇİ -->
@@ -259,17 +258,16 @@ canvas{position:fixed;inset:0;z-index:0}
         <span>Youtube</span>
       </div>
 
+      <!-- HOVER POPUP -->
+      <div class="hover-popup" id="hoverPopup">
+        <img src="https://img.youtube.com/vi/mcgwul5InXc/mqdefault.jpg" alt="Video 1" data-video="mcgwul5InXc">
+        <img src="https://img.youtube.com/vi/VIjytDcMfJg/mqdefault.jpg" alt="Video 2" data-video="VIjytDcMfJg">
+        <img src="https://img.youtube.com/vi/bo9C5NHkBDA/mqdefault.jpg" alt="Video 3" data-video="bo9C5NHkBDA">
+        <img src="https://img.youtube.com/vi/sCJuhORPpoE/mqdefault.jpg" alt="Video 4" data-video="sCJuhORPpoE">
+      </div>
+
     </div>
-
   </div>
-</div>
-
-<!-- HOVER POPUP -->
-<div class="hover-popup" id="hoverPopup">
-  <img src="https://img.youtube.com/vi/mcgwul5InXc/mqdefault.jpg" alt="Video 1" data-video="mcgwul5InXc">
-  <img src="https://img.youtube.com/vi/VIjytDcMfJg/mqdefault.jpg" alt="Video 2" data-video="VIjytDcMfJg">
-  <img src="https://img.youtube.com/vi/bo9C5NHkBDA/mqdefault.jpg" alt="Video 3" data-video="bo9C5NHkBDA">
-  <img src="https://img.youtube.com/vi/sCJuhORPpoE/mqdefault.jpg" alt="Video 4" data-video="sCJuhORPpoE">
 </div>
 
 <div class="hover-backdrop" id="hoverBackdrop"></div>
@@ -279,7 +277,7 @@ canvas{position:fixed;inset:0;z-index:0}
 </div>
 
 <script>
-/* MATRIX CANVAS SETUP */
+/* MATRIX ANİMASYONU */
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
@@ -304,81 +302,57 @@ function initDrops() {
   }
 }
 initDrops();
-
 window.addEventListener('resize', initDrops);
 
-/* MATRIX ANİMASYONU */
 let lastTime = 0;
 const interval = 35;
 
 function draw(currentTime) {
-  if (currentTime - lastTime >= interval) {
+  if(currentTime - lastTime >= interval){
     ctx.fillStyle = "rgba(0,0,0,0.06)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0,0,canvas.width,canvas.height);
     ctx.fillStyle = "#a855f7";
     ctx.font = fontSize + "px monospace";
-    
-    for(let i = 0; i < drops.length; i++) {
-      const char = text[Math.floor(Math.random() * text.length)];
-      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-      
-      if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
+    for(let i=0;i<drops.length;i++){
+      const char=text[Math.floor(Math.random()*text.length)];
+      ctx.fillText(char,i*fontSize,drops[i]*fontSize);
+      if(drops[i]*fontSize>canvas.height && Math.random()>0.975) drops[i]=0;
       drops[i]++;
     }
-    
     lastTime = currentTime;
   }
-  
   requestAnimationFrame(draw);
 }
-
 requestAnimationFrame(draw);
 
-/* HOVER POPUP SİSTEMİ */
+/* HOVER POPUP - Sadece simgeye hover */
 const highlightBtn = document.getElementById('highlightBtn');
 const hoverPopup = document.getElementById('hoverPopup');
 const hoverBackdrop = document.getElementById('hoverBackdrop');
 const blurWrapper = document.getElementById('blurWrapper');
 
-let isHoveringButton = false;
-let isHoveringPopup = false;
-
-function showPopup() {
+highlightBtn.addEventListener('mouseenter', () => {
   hoverPopup.classList.add('show');
   hoverBackdrop.classList.add('active');
   blurWrapper.classList.add('blur');
-}
+});
 
-function hidePopup() {
-  if (!isHoveringButton && !isHoveringPopup) {
+highlightBtn.addEventListener('mouseleave', (e) => {
+  // Popup üzerine geçerse kapatma
+  if(!hoverPopup.matches(':hover')) {
     hoverPopup.classList.remove('show');
     hoverBackdrop.classList.remove('active');
     blurWrapper.classList.remove('blur');
   }
-}
-
-highlightBtn.addEventListener('mouseenter', () => {
-  isHoveringButton = true;
-  showPopup();
-});
-
-highlightBtn.addEventListener('mouseleave', () => {
-  isHoveringButton = false;
-  setTimeout(hidePopup, 100);
-});
-
-hoverPopup.addEventListener('mouseenter', () => {
-  isHoveringPopup = true;
 });
 
 hoverPopup.addEventListener('mouseleave', () => {
-  isHoveringPopup = false;
-  setTimeout(hidePopup, 100);
+  hoverPopup.classList.remove('show');
+  hoverBackdrop.classList.remove('active');
+  blurWrapper.classList.remove('blur');
 });
 
-/* VIDEO POPUP SİSTEMİ */
+/* VIDEO POPUP */
 const overlay = document.getElementById("overlay");
 const videoFrame = document.getElementById("videoFrame");
 const videoThumbnails = document.querySelectorAll('.hover-popup img');
@@ -397,21 +371,17 @@ videoThumbnails.forEach(thumbnail => {
 });
 
 overlay.addEventListener('click', (e) => {
-  if(e.target === overlay) {
-    closeOverlay();
-  }
+  if(e.target === overlay) closeOverlay();
 });
 
 document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape' && overlay.style.display === 'flex') {
-    closeOverlay();
-  }
+  if(e.key==='Escape' && overlay.style.display==='flex') closeOverlay();
 });
 
 function closeOverlay() {
-  overlay.style.display = "none";
-  videoFrame.src = "";
-  document.body.style.overflow = "auto";
+  overlay.style.display="none";
+  videoFrame.src="";
+  document.body.style.overflow="auto";
 }
 </script>
 
