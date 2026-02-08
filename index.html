@@ -48,7 +48,7 @@ canvas{position:fixed;inset:0;z-index:0}
 /* ANA KART */
 .card{
   position:relative;
-  padding:45px 50px 25px 50px;
+  padding:45px 50px 40px 50px;
   width:95%;
   max-width:520px;
   background:rgba(15,15,15,0.92);
@@ -109,7 +109,7 @@ canvas{position:fixed;inset:0;z-index:0}
 /* HIGHLIGHT CONTAINER - Blur wrapper'ın dışında */
 .highlight-container{
   position:fixed;
-  bottom:calc(50% - 260px + 25px);
+  bottom:calc(50% - 290px);
   left:50%;
   transform:translateX(-50%);
   z-index:150;
@@ -123,8 +123,7 @@ canvas{position:fixed;inset:0;z-index:0}
   align-items:center;
   justify-content:center;
   gap:6px;
-  opacity:0;
-  pointer-events:none;
+  margin-bottom:0;
 }
 
 /* HIGHLIGHT */
@@ -267,7 +266,7 @@ canvas{position:fixed;inset:0;z-index:0}
 
 @media (max-width: 480px) {
   .card { 
-    padding: 30px 25px;
+    padding: 30px 25px 35px 25px;
   }
   .title { 
     font-size: 28px; 
@@ -294,7 +293,7 @@ canvas{position:fixed;inset:0;z-index:0}
     height: 250px;
   }
   .highlight-container{
-    bottom:calc(50% - 200px + 25px);
+    bottom:calc(50% - 225px);
   }
 }
 </style>
@@ -322,7 +321,7 @@ canvas{position:fixed;inset:0;z-index:0}
       <a href="https://www.instagram.com/enginleader/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profilim"><i class="fa-brands fa-instagram"></i></a>
     </div>
 
-    <!-- PLACEHOLDER YOUTUBE SIMGE - Card içinde görünmez -->
+    <!-- PLACEHOLDER YOUTUBE SIMGE - Card içinde yer tutuyor -->
     <div class="highlight-placeholder">
       <i class="fa-brands fa-youtube"></i>
       <span>Youtube</span>
