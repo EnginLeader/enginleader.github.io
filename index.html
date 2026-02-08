@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>EnginLeader</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Teko:wght@500;600&display=swap" rel="stylesheet">
+<!-- 🔥 YENİ CYBERPUNK FONTLAR -->
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Teko:wght@500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
@@ -17,130 +18,104 @@
   box-sizing:border-box;
 }
 
+/* BODY */
 body{
+  background:#0b0b0b;
   height:100vh;
-  background:#060606;
   overflow:hidden;
 
   display:flex;
   justify-content:center;
   align-items:center;
 
+  /* 🔥 link yazıları */
   font-family:'Teko', sans-serif;
   color:white;
 }
 
-/* ===== MATRIX ===== */
+/* MATRIX */
 canvas{
   position:fixed;
   inset:0;
   z-index:0;
 }
 
-/* ===== MOUSE NEON ===== */
-.cursor-glow{
-  position:fixed;
-  width:350px;
-  height:350px;
-  pointer-events:none;
-
-  background:radial-gradient(circle, rgba(168,85,247,.25) 0%, transparent 60%);
-  transform:translate(-50%,-50%);
-  z-index:1;
-}
-
-/* ===== ANA KART ===== */
+/* ANA PANEL */
 .card{
   position:relative;
   z-index:2;
 
-  padding:45px 40px;
+  padding:40px;
 
-  backdrop-filter:blur(14px);
-  background:rgba(20,20,20,.60);
+  background:rgba(15,15,15,0.95);
 
-  border-radius:22px;
-
-  /* 🔥 SABİT MOR BORDER */
-  border:2px solid #a855f7;
-
-  /* hafif neon glow */
-  box-shadow:0 0 25px rgba(168,85,247,.25);
+  border-radius:20px;
 
   text-align:center;
 
-  animation:enter .8s ease forwards;
-  opacity:0;
-  transform:scale(.9);
+  border:1px solid #2b2b2b;
+
+  box-shadow:
+    0 0 25px #a855f7,
+    0 0 60px rgba(168,85,247,.25);
 }
 
-@keyframes enter{
-  to{
-    opacity:1;
-    transform:scale(1);
-  }
-}
-
-/* PROFİL */
+/* PROFIL */
 .avatar{
-  width:135px;
-  height:135px;
+  width:130px;
+  height:130px;
   border-radius:50%;
   object-fit:cover;
 
   border:3px solid #a855f7;
   box-shadow:0 0 20px #a855f7;
 
-  margin-bottom:25px;
+  margin-bottom:20px;
 }
 
-/* ===== BAŞLIK ===== */
+/* 🔥 BAŞLIK (CYBERPUNK UPGRADE) */
 .title{
-  font-family:'Orbitron', sans-serif;
+  font-family:'Audiowide', cursive;
 
-  font-size:38px;
+  font-size:36px;
   letter-spacing:4px;
-  font-weight:900;
 
-  margin-bottom:30px;
+  margin-bottom:25px;
 
-  color:#fff;
+  color:#e9d5ff;
 
   text-shadow:
-    0 0 8px #a855f7,
-    0 0 20px #9333ea;
-
-  animation:glitch .12s infinite alternate;
+    0 0 10px #a855f7,
+    0 0 25px #9333ea,
+    0 0 40px #7e22ce;
 }
 
-@keyframes glitch{
-  from{transform:translate(0)}
-  to{transform:translate(.6px,-.6px)}
-}
-
-/* ===== LINKLER ===== */
+/* 🔥 LINK KARTLAR */
 .link{
   display:inline-block;
 
-  padding:10px 30px;
   margin:8px 0;
+  padding:11px 26px;
 
-  border-radius:14px;
-
-  background:rgba(40,40,40,.7);
+  background:#1b1b1b;
 
   border:1px solid #333;
 
+  border-radius:12px;
+
+  font-family:'Teko', sans-serif;
   font-size:20px;
+  letter-spacing:2px;
+
+  color:#e5e5e5;
 
   text-decoration:none;
-  color:#e5e5e5;
 
   transition:.25s;
 }
 
 .link:hover{
-  color:#fff;
+  color:#d8b4fe;
 
   border-color:#a855f7;
 
@@ -157,7 +132,6 @@ canvas{
 <body>
 
 <canvas id="matrix"></canvas>
-<div class="cursor-glow" id="glow"></div>
 
 <div class="card">
 
@@ -175,45 +149,40 @@ canvas{
 
 
 <script>
-/* MATRIX */
-const canvas=document.querySelector("canvas");
-const ctx=canvas.getContext("2d");
+/* MATRIX ENGİNLEADER */
 
-canvas.height=innerHeight;
-canvas.width=innerWidth;
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
 
-const text="enginleader";
-const size=18;
-const columns=canvas.width/size;
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
 
-const drops=[];
+const text = "enginleader";
+const fontSize = 18;
+const columns = canvas.width / fontSize;
+
+const drops = [];
 
 for(let i=0;i<columns;i++) drops[i]=1;
 
 function draw(){
- ctx.fillStyle="rgba(0,0,0,0.06)";
- ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="rgba(0,0,0,0.06)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 
- ctx.fillStyle="#a855f7";
- ctx.font=size+"px monospace";
+  ctx.fillStyle="#a855f7";
+  ctx.font = fontSize+"px monospace";
 
- for(let i=0;i<drops.length;i++){
-  const char=text[Math.floor(Math.random()*text.length)];
-  ctx.fillText(char,i*size,drops[i]*size);
+  for(let i=0;i<drops.length;i++){
+    const char=text[Math.floor(Math.random()*text.length)];
+    ctx.fillText(char,i*fontSize,drops[i]*fontSize);
 
-  if(drops[i]*size>canvas.height && Math.random()>0.975) drops[i]=0;
-  drops[i]++;
- }
+    if(drops[i]*fontSize>canvas.height && Math.random()>0.975) drops[i]=0;
+
+    drops[i]++;
+  }
 }
+
 setInterval(draw,35);
-
-
-/* MOUSE NEON */
-const glow=document.getElementById("glow");
-document.addEventListener("mousemove",e=>{
-  glow.style.left=e.clientX+"px";
-  glow.style.top=e.clientY+"px";
-});
 </script>
 
 </body>
