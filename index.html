@@ -29,7 +29,7 @@ body{
 /* MATRIX */
 canvas{position:fixed;inset:0;z-index:0}
 
-/* BLUR WRAPPER - Sadece canvas ve card için */
+/* BLUR WRAPPER - Sadece canvas ve card için (YouTube butonu hariç) */
 .blur-wrapper{
   position:fixed;
   inset:0;
@@ -39,6 +39,7 @@ canvas{position:fixed;inset:0;z-index:0}
   align-items:center;
   padding:20px 0;
   transition:filter 0.3s;
+  pointer-events:none;
 }
 
 .blur-wrapper.blur{
@@ -60,6 +61,7 @@ canvas{position:fixed;inset:0;z-index:0}
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+  pointer-events:auto;
 }
 
 /* PROFIL - DİKEY DİKDÖRTGEN VE OVAL KENARLI */
@@ -110,7 +112,17 @@ canvas{position:fixed;inset:0;z-index:0}
   transform:scale(1.1);
 }
 
-/* HIGHLIGHT - KART İÇİNDE */
+/* HIGHLIGHT CONTAINER - Blur wrapper'ın dışında, ayrı z-index */
+.highlight-container{
+  position:fixed;
+  bottom:calc(50% - 340px);
+  left:50%;
+  transform:translateX(-50%);
+  z-index:150;
+  display:inline-block;
+}
+
+/* HIGHLIGHT - Blur etkilenmeyecek */
 .highlight{
   display:flex;
   flex-direction:column;
@@ -282,6 +294,9 @@ canvas{position:fixed;inset:0;z-index:0}
     width: 95%;
     height: 250px;
   }
+  .highlight-container{
+    bottom:calc(50% - 310px);
+  }
 }
 </style>
 </head>
@@ -309,12 +324,14 @@ canvas{position:fixed;inset:0;z-index:0}
       </div>
     </div>
 
-    <!-- YOUTUBE HIGHLIGHT - KART İÇİNDE -->
-    <div class="highlight" id="highlightBtn">
-      <i class="fa-brands fa-youtube"></i>
-      <span>Youtube</span>
-    </div>
+  </div>
+</div>
 
+<!-- YOUTUBE HIGHLIGHT - Blur wrapper'ın dışında -->
+<div class="highlight-container">
+  <div class="highlight" id="highlightBtn">
+    <i class="fa-brands fa-youtube"></i>
+    <span>Youtube</span>
   </div>
 </div>
 
@@ -392,7 +409,7 @@ function draw(currentTime) {
 
 requestAnimationFrame(draw);
 
-/* HOVER POPUP SİSTEMİ */
+/* HOVER POPUP SİSTEMİ - Sadece butonun tam üstüne gelince */
 const highlightBtn = document.getElementById('highlightBtn');
 const hoverPopup = document.getElementById('hoverPopup');
 const hoverBackdrop = document.getElementById('hoverBackdrop');
@@ -415,6 +432,7 @@ function hidePopup() {
   }
 }
 
+// Sadece butonun TAM ÜZERİNE gelince aktif olacak
 highlightBtn.addEventListener('mouseenter', () => {
   isHoveringButton = true;
   showPopup();
