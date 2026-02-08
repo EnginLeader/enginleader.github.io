@@ -6,7 +6,6 @@
 <title>EnginLeader</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Oxanium:wght@400;700&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
 
 <style>
@@ -29,7 +28,7 @@ body{
 /* MATRIX */
 canvas{position:fixed;inset:0;z-index:0}
 
-/* BLUR WRAPPER - Sadece canvas ve card için */
+/* BLUR WRAPPER */
 .blur-wrapper{
   position:fixed;
   inset:0;
@@ -48,7 +47,7 @@ canvas{position:fixed;inset:0;z-index:0}
 /* ANA KART */
 .card{
   position:relative;
-  padding:45px 50px 15px 50px;
+  padding:45px 50px 45px 50px; /* üst ve alt boşluk eşit */
   width:95%;
   max-width:520px;
   min-height:520px;
@@ -66,7 +65,7 @@ canvas{position:fixed;inset:0;z-index:0}
 .avatar{
   width:150px;
   height:150px;
-  border-radius:22px; /* Oval köşe */
+  border-radius:22px; /* oval köşe */
   object-fit:cover;
   border:3px solid #a855f7;
   box-shadow:0 0 20px #a855f7;
@@ -87,7 +86,6 @@ canvas{position:fixed;inset:0;z-index:0}
   display:flex;
   gap:12px;
   justify-content:center;
-  margin-bottom:25px;
   flex-wrap:wrap;
 }
 
@@ -110,26 +108,17 @@ canvas{position:fixed;inset:0;z-index:0}
   transform:scale(1.1);
 }
 
-/* HIGHLIGHT CONTAINER */
-.highlight-container{
-  position:fixed;
-  bottom:70px; /* YouTube simgesini aşağıya çekmek için */
-  left:50%;
-  transform:translateX(-50%);
-  z-index:150;
-  display:inline-block;
-}
-
-/* HIGHLIGHT */
-.highlight{
+/* YOUTUBE HIGHLIGHT - ANA KART İÇİ */
+.youtube-highlight{
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   cursor:pointer;
   gap:6px;
+  margin-top:20px;
 }
-.highlight i{
+.youtube-highlight i{
   font-size:52px;
   color:#a855f7;
   border:1px solid #a855f7;
@@ -138,11 +127,11 @@ canvas{position:fixed;inset:0;z-index:0}
   background:#1b1b1b;
   transition:.3s;
 }
-.highlight i:hover{
+.youtube-highlight i:hover{
   box-shadow:0 0 20px #a855f7;
   transform:scale(1.1);
 }
-.highlight span{
+.youtube-highlight span{
   font-size:14px;
   letter-spacing:1px;
   color:#a855f7;
@@ -169,13 +158,11 @@ canvas{position:fixed;inset:0;z-index:0}
   pointer-events:none;
   min-width:1380px;
 }
-
 .hover-popup.show{
   opacity:1;
   visibility:visible;
   pointer-events:auto;
 }
-
 .hover-popup img{
   width:320px;
   height:180px;
@@ -203,7 +190,6 @@ canvas{position:fixed;inset:0;z-index:0}
   transition:opacity 0.3s, visibility 0.3s;
   pointer-events:none;
 }
-
 .hover-backdrop.active{
   opacity:1;
   visibility:visible;
@@ -238,8 +224,9 @@ canvas{position:fixed;inset:0;z-index:0}
     width:120px; 
     height:120px; 
   }
-  .highlight-container {
-    bottom:55px; /* mobilde de simetrik */
+  .youtube-highlight i{
+    font-size:46px;
+    padding:15px;
   }
 }
 </style>
@@ -254,7 +241,6 @@ canvas{position:fixed;inset:0;z-index:0}
 
     <div>
       <img src="1770549952621.png" alt="EnginLeader Profil Fotoğrafı" class="avatar">
-
       <div class="title">EnginLeader</div>
 
       <!-- İKONLAR -->
@@ -266,18 +252,15 @@ canvas{position:fixed;inset:0;z-index:0}
         <a href="https://www.youtube.com/@enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="YouTube Kanalım"><i class="fa-brands fa-youtube"></i></a>
         <a href="https://www.instagram.com/enginleader/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profilim"><i class="fa-brands fa-instagram"></i></a>
       </div>
+
+      <!-- YOUTUBE HIGHLIGHT ANA KART İÇİ -->
+      <div class="youtube-highlight" id="highlightBtn">
+        <i class="fa-brands fa-youtube"></i>
+        <span>Youtube</span>
+      </div>
+
     </div>
 
-    <div style="height:40px"></div>
-
-  </div>
-</div>
-
-<!-- HIGHLIGHT YOUTUBE SIMGE -->
-<div class="highlight-container">
-  <div class="highlight" id="highlightBtn">
-    <i class="fa-brands fa-youtube"></i>
-    <span>Youtube</span>
   </div>
 </div>
 
