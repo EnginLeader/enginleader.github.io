@@ -94,6 +94,7 @@ canvas{position:fixed;inset:0;z-index:0}
 
 /* HIGHLIGHT */
 .highlight{
+  position:relative;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -121,6 +122,55 @@ canvas{position:fixed;inset:0;z-index:0}
   color:#a855f7;
 }
 
+/* HOVER POPUP */
+.hover-popup{
+  position:absolute;
+  bottom:110%;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(15,15,15,0.98);
+  border:1px solid #a855f7;
+  border-radius:12px;
+  padding:15px;
+  display:none;
+  gap:10px;
+  flex-wrap:wrap;
+  box-shadow:0 0 20px #a855f7,0 0 40px rgba(168,85,247,.4);
+  z-index:100;
+  width:320px;
+  max-width:90vw;
+}
+.hover-popup::after{
+  content:'';
+  position:absolute;
+  bottom:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  width:0;
+  height:0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-top:10px solid #a855f7;
+}
+.hover-popup img{
+  width:145px;
+  height:82px;
+  border-radius:8px;
+  cursor:pointer;
+  border:2px solid #333;
+  transition:.25s;
+  object-fit:cover;
+}
+.hover-popup img:hover{
+  border-color:#a855f7;
+  transform:scale(1.05);
+  box-shadow:0 0 10px #a855f7;
+}
+
+.highlight:hover .hover-popup{
+  display:flex;
+}
+
 /* POPUP OVERLAY */
 .overlay{
   position:fixed;
@@ -128,27 +178,20 @@ canvas{position:fixed;inset:0;z-index:0}
   left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.85);
+  background:rgba(0,0,0,0.92);
   display:none;
   justify-content:center;
   align-items:center;
-  flex-wrap:wrap;
-  gap:15px;
   z-index:999;
   padding:20px;
-  overflow:auto;
 }
 .overlay iframe{
-  width:300px;
-  height:170px;
+  width:90%;
+  max-width:800px;
+  height:450px;
   border-radius:12px;
-  border:1px solid #a855f7;
-  box-shadow:0 0 15px #a855f7,0 0 35px rgba(168,85,247,.5);
-  cursor:pointer;
-  transition:.25s;
-}
-.overlay iframe:hover{
-  transform:scale(1.05);
+  border:2px solid #a855f7;
+  box-shadow:0 0 30px #a855f7,0 0 60px rgba(168,85,247,.6);
 }
 
 /* MOBİL UYUMLULUK */
@@ -176,9 +219,16 @@ canvas{position:fixed;inset:0;z-index:0}
     font-size: 46px;
     padding: 15px;
   }
+  .hover-popup{
+    width:280px;
+  }
+  .hover-popup img{
+    width:130px;
+    height:73px;
+  }
   .overlay iframe {
-    width: 90%;
-    height: 200px;
+    width: 95%;
+    height: 250px;
   }
 }
 </style>
@@ -205,19 +255,24 @@ canvas{position:fixed;inset:0;z-index:0}
   </div>
 
   <!-- HIGHLIGHT YOUTUBE SIMGE -->
-  <div class="highlight" id="highlightBtn" tabindex="0" role="button" aria-label="YouTube videolarımı göster">
+  <div class="highlight" id="highlightBtn">
     <i class="fa-brands fa-youtube"></i>
     <span>Youtube</span>
+    
+    <!-- HOVER POPUP -->
+    <div class="hover-popup" id="hoverPopup">
+      <img src="https://img.youtube.com/vi/mcgwul5InXc/mqdefault.jpg" alt="Video 1" data-video="mcgwul5InXc">
+      <img src="https://img.youtube.com/vi/VIjytDcMfJg/mqdefault.jpg" alt="Video 2" data-video="VIjytDcMfJg">
+      <img src="https://img.youtube.com/vi/bo9C5NHkBDA/mqdefault.jpg" alt="Video 3" data-video="bo9C5NHkBDA">
+      <img src="https://img.youtube.com/vi/sCJuhORPpoE/mqdefault.jpg" alt="Video 4" data-video="sCJuhORPpoE">
+    </div>
   </div>
 
 </div>
 
 <!-- POPUP OVERLAY -->
-<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="YouTube Videoları">
-  <iframe src="https://www.youtube.com/embed/mcgwul5InXc?autoplay=0&controls=1&loop=1&playlist=mcgwul5InXc" title="Video 1" frameborder="0" allowfullscreen></iframe>
-  <iframe src="https://www.youtube.com/embed/VIjytDcMfJg?autoplay=0&controls=1&loop=1&playlist=VIjytDcMfJg" title="Video 2" frameborder="0" allowfullscreen></iframe>
-  <iframe src="https://www.youtube.com/embed/bo9C5NHkBDA?autoplay=0&controls=1&loop=1&playlist=bo9C5NHkBDA" title="Video 3" frameborder="0" allowfullscreen></iframe>
-  <iframe src="https://www.youtube.com/embed/sCJuhORPpoE?autoplay=0&controls=1&loop=1&playlist=sCJuhORPpoE" title="Video 4" frameborder="0" allowfullscreen></iframe>
+<div class="overlay" id="overlay">
+  <iframe id="videoFrame" src="" title="YouTube Video" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
 <script>
@@ -249,7 +304,7 @@ initDrops();
 
 window.addEventListener('resize', initDrops);
 
-/* MATRIX ANİMASYONU - Eski hızda (35ms interval) */
+/* MATRIX ANİMASYONU */
 let lastTime = 0;
 const interval = 35;
 
@@ -278,37 +333,41 @@ function draw(currentTime) {
 
 requestAnimationFrame(draw);
 
-/* HIGHLIGHT POPUP */
-const highlightBtn = document.getElementById("highlightBtn");
+/* VIDEO POPUP SİSTEMİ */
 const overlay = document.getElementById("overlay");
+const videoFrame = document.getElementById("videoFrame");
+const videoThumbnails = document.querySelectorAll('.hover-popup img');
 
-function openOverlay() {
-  overlay.style.display = "flex";
-  document.body.style.overflow = "hidden";
-}
-
-function closeOverlay() {
-  overlay.style.display = "none";
-  document.body.style.overflow = "auto";
-}
-
-highlightBtn.addEventListener("click", openOverlay);
-
-highlightBtn.addEventListener("keypress", (e) => {
-  if(e.key === "Enter") openOverlay();
+// Video thumbnail'lere tıklayınca overlay aç
+videoThumbnails.forEach(thumbnail => {
+  thumbnail.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const videoId = thumbnail.getAttribute('data-video');
+    videoFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1`;
+    overlay.style.display = "flex";
+    document.body.style.overflow = "hidden";
+  });
 });
 
-overlay.addEventListener("click", (e) => {
+// Overlay'e tıklayınca kapat
+overlay.addEventListener('click', (e) => {
   if(e.target === overlay) {
     closeOverlay();
   }
 });
 
-document.addEventListener("keydown", (e) => {
-  if(e.key === "Escape" && overlay.style.display === "flex") {
+// ESC tuşu ile kapat
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && overlay.style.display === 'flex') {
     closeOverlay();
   }
 });
+
+function closeOverlay() {
+  overlay.style.display = "none";
+  videoFrame.src = "";
+  document.body.style.overflow = "auto";
+}
 </script>
 
 </body>
