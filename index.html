@@ -69,6 +69,7 @@ canvas{position:fixed;inset:0;z-index:0}
   gap:12px;
   justify-content:center;
   margin-bottom:25px;
+  flex-wrap:wrap;
 }
 
 .link{
@@ -148,6 +149,38 @@ canvas{position:fixed;inset:0;z-index:0}
 .overlay iframe:hover{
   transform:scale(1.05);
 }
+
+/* MOBİL UYUMLULUK */
+@media (max-width: 480px) {
+  .card { 
+    padding: 30px 25px; 
+    margin: 30px 0;
+  }
+  .title { 
+    font-size: 28px; 
+    letter-spacing: 2px;
+  }
+  .avatar { 
+    width: 100px; 
+    height: 100px; 
+  }
+  .links {
+    gap: 10px;
+  }
+  .link {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+  .highlight i {
+    font-size: 46px;
+    padding: 15px;
+  }
+  .overlay iframe {
+    width: 90%;
+    height: 200px;
+  }
+}
 </style>
 </head>
 
@@ -157,22 +190,22 @@ canvas{position:fixed;inset:0;z-index:0}
 
 <div class="card">
 
-  <img src="1770549952621.png" class="avatar">
+  <img src="1770549952621.png" alt="EnginLeader Profil Fotoğrafı" class="avatar">
 
   <div class="title">EnginLeader</div>
 
   <!-- İKONLAR -->
   <div class="links">
-    <a href="#" class="link"><i class="fa-brands fa-steam"></i></a>
-    <a href="#" class="link"><i class="fa-brands fa-discord"></i></a>
-    <a href="#" class="link"><i class="fa-brands fa-twitch"></i></a>
-    <a href="#" class="link"><i class="fa-brands fa-kickstarter-k"></i></a>
-    <a href="#" class="link"><i class="fa-brands fa-youtube"></i></a>
-    <a href="#" class="link"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://steamcommunity.com/id/yourprofile" class="link" target="_blank" rel="noopener noreferrer" aria-label="Steam Profilim"><i class="fa-brands fa-steam"></i></a>
+    <a href="https://discord.com/users/youruserid" class="link" target="_blank" rel="noopener noreferrer" aria-label="Discord Profilim"><i class="fa-brands fa-discord"></i></a>
+    <a href="https://twitch.tv/yourprofile" class="link" target="_blank" rel="noopener noreferrer" aria-label="Twitch Kanalım"><i class="fa-brands fa-twitch"></i></a>
+    <a href="https://kick.com/yourprofile" class="link" target="_blank" rel="noopener noreferrer" aria-label="Kick Kanalım"><i class="fa-brands fa-kickstarter-k"></i></a>
+    <a href="https://youtube.com/@yourprofile" class="link" target="_blank" rel="noopener noreferrer" aria-label="YouTube Kanalım"><i class="fa-brands fa-youtube"></i></a>
+    <a href="https://instagram.com/yourprofile" class="link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profilim"><i class="fa-brands fa-instagram"></i></a>
   </div>
 
   <!-- HIGHLIGHT YOUTUBE SIMGE -->
-  <div class="highlight" id="highlightBtn">
+  <div class="highlight" id="highlightBtn" tabindex="0" role="button" aria-label="YouTube videolarımı göster">
     <i class="fa-brands fa-youtube"></i>
     <span>Youtube</span>
   </div>
@@ -180,48 +213,98 @@ canvas{position:fixed;inset:0;z-index:0}
 </div>
 
 <!-- POPUP OVERLAY -->
-<div class="overlay" id="overlay">
-  <iframe src="https://www.youtube.com/embed/mcgwul5InXc?autoplay=0&controls=1&loop=1&playlist=mcgwul5InXc" title="Clip 1" frameborder="0" allowfullscreen></iframe>
-  <iframe src="https://www.youtube.com/embed/VIjytDcMfJg?autoplay=0&controls=1&loop=1&playlist=VIjytDcMfJg" title="Clip 2" frameborder="0" allowfullscreen></iframe>
-  <iframe src="https://www.youtube.com/embed/bo9C5NHkBDA?autoplay=0&controls=1&loop=1&playlist=bo9C5NHkBDA" title="Clip 3" frameborder="0" allowfullscreen></iframe>
-  <iframe src="https://www.youtube.com/embed/sCJuhORPpoE?autoplay=0&controls=1&loop=1&playlist=sCJuhORPpoE" title="Clip 4" frameborder="0" allowfullscreen></iframe>
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="YouTube Videoları">
+  <iframe src="https://www.youtube.com/embed/mcgwul5InXc?autoplay=0&controls=1&loop=1&playlist=mcgwul5InXc" title="Video 1" frameborder="0" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/VIjytDcMfJg?autoplay=0&controls=1&loop=1&playlist=VIjytDcMfJg" title="Video 2" frameborder="0" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/bo9C5NHkBDA?autoplay=0&controls=1&loop=1&playlist=bo9C5NHkBDA" title="Video 3" frameborder="0" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/sCJuhORPpoE?autoplay=0&controls=1&loop=1&playlist=sCJuhORPpoE" title="Video 4" frameborder="0" allowfullscreen></iframe>
 </div>
 
 <script>
-/* MATRIX */
+/* MATRIX CANVAS SETUP */
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
-const text="enginleader";
-const fontSize=18;
-const columns=canvas.width/fontSize;
-const drops=[];
-for(let i=0;i<columns;i++) drops[i]=1;
-function draw(){
- ctx.fillStyle="rgba(0,0,0,0.06)";
- ctx.fillRect(0,0,canvas.width,canvas.height);
- ctx.fillStyle="#a855f7";
- ctx.font=fontSize+"px monospace";
- for(let i=0;i<drops.length;i++){
-  const char=text[Math.floor(Math.random()*text.length)];
-  ctx.fillText(char,i*fontSize,drops[i]*fontSize);
-  if(drops[i]*fontSize>canvas.height && Math.random()>0.975) drops[i]=0;
-  drops[i]++;
- }
+
+function resizeCanvas() {
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
 }
-setInterval(draw,35);
+resizeCanvas();
+
+// Pencere boyutu değiştiğinde canvas'ı yeniden ayarla
+window.addEventListener('resize', resizeCanvas);
+
+const text = "enginleader";
+const fontSize = 18;
+let columns = Math.floor(canvas.width / fontSize);
+let drops = [];
+
+function initDrops() {
+  columns = Math.floor(canvas.width / fontSize);
+  drops = [];
+  for(let i = 0; i < columns; i++) {
+    drops[i] = 1;
+  }
+}
+initDrops();
+
+window.addEventListener('resize', initDrops);
+
+/* MATRIX ANİMASYONU - requestAnimationFrame ile daha iyi performans */
+function draw() {
+  ctx.fillStyle = "rgba(0,0,0,0.06)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#a855f7";
+  ctx.font = fontSize + "px monospace";
+  
+  for(let i = 0; i < drops.length; i++) {
+    const char = text[Math.floor(Math.random() * text.length)];
+    ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+    
+    if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i]++;
+  }
+  
+  requestAnimationFrame(draw);
+}
+
+draw();
 
 /* HIGHLIGHT POPUP */
 const highlightBtn = document.getElementById("highlightBtn");
 const overlay = document.getElementById("overlay");
 
-highlightBtn.addEventListener("click",()=>{ overlay.style.display="flex"; });
+function openOverlay() {
+  overlay.style.display = "flex";
+  document.body.style.overflow = "hidden"; // Arka planı kilitler
+}
+
+function closeOverlay() {
+  overlay.style.display = "none";
+  document.body.style.overflow = "auto";
+}
+
+// Tıklama ile aç
+highlightBtn.addEventListener("click", openOverlay);
+
+// Enter tuşu ile aç (erişilebilirlik)
+highlightBtn.addEventListener("keypress", (e) => {
+  if(e.key === "Enter") openOverlay();
+});
 
 // Overlay dışında tıklayınca kapat
-overlay.addEventListener("click",(e)=>{
-  if(e.target===overlay){
-    overlay.style.display="none";
+overlay.addEventListener("click", (e) => {
+  if(e.target === overlay) {
+    closeOverlay();
+  }
+});
+
+// ESC tuşu ile kapat
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape" && overlay.style.display === "flex") {
+    closeOverlay();
   }
 });
 </script>
