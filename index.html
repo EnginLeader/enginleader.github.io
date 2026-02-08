@@ -48,10 +48,10 @@ canvas{position:fixed;inset:0;z-index:0}
 /* ANA KART */
 .card{
   position:relative;
-  padding:45px 50px 15px 50px;
+  padding:40px 50px 40px 50px;
   width:95%;
   max-width:520px;
-  min-height:520px;
+  min-height:580px;
   background:rgba(15,15,15,0.92);
   border-radius:22px;
   text-align:center;
@@ -62,15 +62,15 @@ canvas{position:fixed;inset:0;z-index:0}
   justify-content:space-between;
 }
 
-/* PROFIL - DİKDÖRTGEN VE OVAL KENARLI */
+/* PROFIL - DİKEY DİKDÖRTGEN VE OVAL KENARLI */
 .avatar{
-  width:180px;
-  height:130px;
+  width:130px;
+  height:180px;
   border-radius:22px;
   object-fit:cover;
   border:3px solid #a855f7;
   box-shadow:0 0 20px #a855f7;
-  margin-bottom:20px;
+  margin-bottom:25px;
 }
 
 /* BAŞLIK */
@@ -87,7 +87,7 @@ canvas{position:fixed;inset:0;z-index:0}
   display:flex;
   gap:12px;
   justify-content:center;
-  margin-bottom:25px;
+  margin-bottom:30px;
   flex-wrap:wrap;
 }
 
@@ -110,17 +110,7 @@ canvas{position:fixed;inset:0;z-index:0}
   transform:scale(1.1);
 }
 
-/* HIGHLIGHT CONTAINER - Kartın tam altında, simetrik konumlandırma */
-.highlight-container{
-  position:fixed;
-  bottom:calc(50% - 310px);
-  left:50%;
-  transform:translateX(-50%);
-  z-index:150;
-  display:inline-block;
-}
-
-/* HIGHLIGHT */
+/* HIGHLIGHT - KART İÇİNDE */
 .highlight{
   display:flex;
   flex-direction:column;
@@ -128,6 +118,7 @@ canvas{position:fixed;inset:0;z-index:0}
   justify-content:center;
   cursor:pointer;
   gap:6px;
+  margin-top:auto;
 }
 .highlight i{
   font-size:52px;
@@ -264,16 +255,16 @@ canvas{position:fixed;inset:0;z-index:0}
 
 @media (max-width: 480px) {
   .card { 
-    padding: 30px 25px 10px 25px;
-    min-height:465px;
+    padding: 30px 25px 30px 25px;
+    min-height:520px;
   }
   .title { 
     font-size: 28px; 
     letter-spacing: 2px;
   }
   .avatar { 
-    width: 140px; 
-    height: 100px; 
+    width: 100px; 
+    height: 140px; 
   }
   .links {
     gap: 10px;
@@ -290,9 +281,6 @@ canvas{position:fixed;inset:0;z-index:0}
   .overlay iframe {
     width: 95%;
     height: 250px;
-  }
-  .highlight-container{
-    bottom:calc(50% - 280px);
   }
 }
 </style>
@@ -321,17 +309,12 @@ canvas{position:fixed;inset:0;z-index:0}
       </div>
     </div>
 
-    <!-- BOŞ ALAN - YouTube simgesi için yer tutucu -->
-    <div style="height:80px"></div>
+    <!-- YOUTUBE HIGHLIGHT - KART İÇİNDE -->
+    <div class="highlight" id="highlightBtn">
+      <i class="fa-brands fa-youtube"></i>
+      <span>Youtube</span>
+    </div>
 
-  </div>
-</div>
-
-<!-- HIGHLIGHT YOUTUBE SIMGE -->
-<div class="highlight-container">
-  <div class="highlight" id="highlightBtn">
-    <i class="fa-brands fa-youtube"></i>
-    <span>Youtube</span>
   </div>
 </div>
 
