@@ -106,10 +106,25 @@ canvas{position:fixed;inset:0;z-index:0}
   transform:scale(1.1);
 }
 
-/* HIGHLIGHT CONTAINER */
+/* HIGHLIGHT CONTAINER - Blur wrapper'ın dışında */
 .highlight-container{
-  position:relative;
+  position:fixed;
+  bottom:calc(50% - 260px + 25px);
+  left:50%;
+  transform:translateX(-50%);
+  z-index:150;
   display:inline-block;
+}
+
+/* HIGHLIGHT - Placeholder card içinde */
+.highlight-placeholder{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  opacity:0;
+  pointer-events:none;
 }
 
 /* HIGHLIGHT */
@@ -140,7 +155,7 @@ canvas{position:fixed;inset:0;z-index:0}
   color:#a855f7;
 }
 
-/* HOVER POPUP - Blur wrapper'ın dışında */
+/* HOVER POPUP */
 .hover-popup{
   position:fixed;
   top:50%;
@@ -278,6 +293,9 @@ canvas{position:fixed;inset:0;z-index:0}
     width: 95%;
     height: 250px;
   }
+  .highlight-container{
+    bottom:calc(50% - 200px + 25px);
+  }
 }
 </style>
 </head>
@@ -304,18 +322,24 @@ canvas{position:fixed;inset:0;z-index:0}
       <a href="https://www.instagram.com/enginleader/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profilim"><i class="fa-brands fa-instagram"></i></a>
     </div>
 
-    <!-- HIGHLIGHT YOUTUBE SIMGE -->
-    <div class="highlight-container">
-      <div class="highlight" id="highlightBtn">
-        <i class="fa-brands fa-youtube"></i>
-        <span>Youtube</span>
-      </div>
+    <!-- PLACEHOLDER YOUTUBE SIMGE - Card içinde görünmez -->
+    <div class="highlight-placeholder">
+      <i class="fa-brands fa-youtube"></i>
+      <span>Youtube</span>
     </div>
 
   </div>
 </div>
 
-<!-- HOVER POPUP - Blur wrapper'ın tamamen dışında -->
+<!-- HIGHLIGHT YOUTUBE SIMGE - Blur wrapper'ın tamamen dışında -->
+<div class="highlight-container">
+  <div class="highlight" id="highlightBtn">
+    <i class="fa-brands fa-youtube"></i>
+    <span>Youtube</span>
+  </div>
+</div>
+
+<!-- HOVER POPUP -->
 <div class="hover-popup" id="hoverPopup">
   <img src="https://img.youtube.com/vi/mcgwul5InXc/mqdefault.jpg" alt="Video 1" data-video="mcgwul5InXc">
   <img src="https://img.youtube.com/vi/VIjytDcMfJg/mqdefault.jpg" alt="Video 2" data-video="VIjytDcMfJg">
