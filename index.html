@@ -29,24 +29,25 @@ body{
 /* MATRIX */
 canvas{position:fixed;inset:0;z-index:0}
 
-/* BLUR LAYER - Sadece Matrix için */
-.blur-layer{
+/* BLUR WRAPPER - Sadece canvas ve card için */
+.blur-wrapper{
   position:fixed;
   inset:0;
   z-index:1;
-  pointer-events:none;
-  backdrop-filter:blur(0px);
-  transition:backdrop-filter 0.3s;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px 0;
+  transition:filter 0.3s;
 }
 
-.blur-layer.active{
-  backdrop-filter:blur(5px);
+.blur-wrapper.blur{
+  filter:blur(5px);
 }
 
 /* ANA KART */
 .card{
   position:relative;
-  z-index:2;
   padding:45px 50px 25px 50px;
   width:95%;
   max-width:520px;
@@ -55,11 +56,6 @@ canvas{position:fixed;inset:0;z-index:0}
   text-align:center;
   border:1px solid #2b2b2b;
   box-shadow:0 0 25px #a855f7,0 0 60px rgba(168,85,247,.25);
-  transition:filter 0.3s;
-}
-
-.card.blur{
-  filter:blur(5px);
 }
 
 /* PROFIL */
@@ -144,12 +140,12 @@ canvas{position:fixed;inset:0;z-index:0}
   color:#a855f7;
 }
 
-/* HOVER POPUP */
+/* HOVER POPUP - Blur wrapper'ın dışında */
 .hover-popup{
-  position:absolute;
-  bottom:calc(100% + 20px);
+  position:fixed;
+  top:50%;
   left:50%;
-  transform:translateX(-50%);
+  transform:translate(-50%, -50%) translateY(-80px);
   background:rgba(10,10,10,0.98);
   border:2px solid #a855f7;
   border-radius:15px;
@@ -172,18 +168,6 @@ canvas{position:fixed;inset:0;z-index:0}
   pointer-events:auto;
 }
 
-.hover-popup::after{
-  content:'';
-  position:absolute;
-  bottom:-14px;
-  left:50%;
-  transform:translateX(-50%);
-  width:0;
-  height:0;
-  border-left:14px solid transparent;
-  border-right:14px solid transparent;
-  border-top:14px solid #a855f7;
-}
 .hover-popup img{
   width:320px;
   height:180px;
@@ -302,41 +286,41 @@ canvas{position:fixed;inset:0;z-index:0}
 
 <canvas id="matrix"></canvas>
 
-<!-- BLUR LAYER -->
-<div class="blur-layer" id="blurLayer"></div>
+<!-- BLUR WRAPPER - Sadece canvas ve card'ı kapsıyor -->
+<div class="blur-wrapper" id="blurWrapper">
+  <div class="card" id="mainCard">
 
-<div class="card" id="mainCard">
+    <img src="1770549952621.png" alt="EnginLeader Profil Fotoğrafı" class="avatar">
 
-  <img src="1770549952621.png" alt="EnginLeader Profil Fotoğrafı" class="avatar">
+    <div class="title">EnginLeader</div>
 
-  <div class="title">EnginLeader</div>
-
-  <!-- İKONLAR -->
-  <div class="links">
-    <a href="https://steamcommunity.com/id/engomi97/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Steam Profilim"><i class="fa-brands fa-steam"></i></a>
-    <a href="https://discord.gg/fRwmjzJaDy" class="link" target="_blank" rel="noopener noreferrer" aria-label="Discord Sunucum"><i class="fa-brands fa-discord"></i></a>
-    <a href="https://www.twitch.tv/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Twitch Kanalım"><i class="fa-brands fa-twitch"></i></a>
-    <a href="https://kick.com/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Kick Kanalım"><i class="fa-brands fa-kickstarter-k"></i></a>
-    <a href="https://www.youtube.com/@enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="YouTube Kanalım"><i class="fa-brands fa-youtube"></i></a>
-    <a href="https://www.instagram.com/enginleader/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profilim"><i class="fa-brands fa-instagram"></i></a>
-  </div>
-
-  <!-- HIGHLIGHT YOUTUBE SIMGE -->
-  <div class="highlight-container">
-    <div class="highlight" id="highlightBtn">
-      <i class="fa-brands fa-youtube"></i>
-      <span>Youtube</span>
+    <!-- İKONLAR -->
+    <div class="links">
+      <a href="https://steamcommunity.com/id/engomi97/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Steam Profilim"><i class="fa-brands fa-steam"></i></a>
+      <a href="https://discord.gg/fRwmjzJaDy" class="link" target="_blank" rel="noopener noreferrer" aria-label="Discord Sunucum"><i class="fa-brands fa-discord"></i></a>
+      <a href="https://www.twitch.tv/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Twitch Kanalım"><i class="fa-brands fa-twitch"></i></a>
+      <a href="https://kick.com/enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="Kick Kanalım"><i class="fa-brands fa-kickstarter-k"></i></a>
+      <a href="https://www.youtube.com/@enginleader" class="link" target="_blank" rel="noopener noreferrer" aria-label="YouTube Kanalım"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.instagram.com/enginleader/" class="link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profilim"><i class="fa-brands fa-instagram"></i></a>
     </div>
-    
-    <!-- HOVER POPUP -->
-    <div class="hover-popup" id="hoverPopup">
-      <img src="https://img.youtube.com/vi/mcgwul5InXc/mqdefault.jpg" alt="Video 1" data-video="mcgwul5InXc">
-      <img src="https://img.youtube.com/vi/VIjytDcMfJg/mqdefault.jpg" alt="Video 2" data-video="VIjytDcMfJg">
-      <img src="https://img.youtube.com/vi/bo9C5NHkBDA/mqdefault.jpg" alt="Video 3" data-video="bo9C5NHkBDA">
-      <img src="https://img.youtube.com/vi/sCJuhORPpoE/mqdefault.jpg" alt="Video 4" data-video="sCJuhORPpoE">
-    </div>
-  </div>
 
+    <!-- HIGHLIGHT YOUTUBE SIMGE -->
+    <div class="highlight-container">
+      <div class="highlight" id="highlightBtn">
+        <i class="fa-brands fa-youtube"></i>
+        <span>Youtube</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HOVER POPUP - Blur wrapper'ın tamamen dışında -->
+<div class="hover-popup" id="hoverPopup">
+  <img src="https://img.youtube.com/vi/mcgwul5InXc/mqdefault.jpg" alt="Video 1" data-video="mcgwul5InXc">
+  <img src="https://img.youtube.com/vi/VIjytDcMfJg/mqdefault.jpg" alt="Video 2" data-video="VIjytDcMfJg">
+  <img src="https://img.youtube.com/vi/bo9C5NHkBDA/mqdefault.jpg" alt="Video 3" data-video="bo9C5NHkBDA">
+  <img src="https://img.youtube.com/vi/sCJuhORPpoE/mqdefault.jpg" alt="Video 4" data-video="sCJuhORPpoE">
 </div>
 
 <!-- ARKA PLAN KARAR EFEKTİ -->
@@ -406,12 +390,10 @@ function draw(currentTime) {
 requestAnimationFrame(draw);
 
 /* HOVER POPUP SİSTEMİ */
-const highlightContainer = document.querySelector('.highlight-container');
 const highlightBtn = document.getElementById('highlightBtn');
 const hoverPopup = document.getElementById('hoverPopup');
 const hoverBackdrop = document.getElementById('hoverBackdrop');
-const blurLayer = document.getElementById('blurLayer');
-const mainCard = document.getElementById('mainCard');
+const blurWrapper = document.getElementById('blurWrapper');
 
 let isHoveringButton = false;
 let isHoveringPopup = false;
@@ -419,16 +401,14 @@ let isHoveringPopup = false;
 function showPopup() {
   hoverPopup.classList.add('show');
   hoverBackdrop.classList.add('active');
-  blurLayer.classList.add('active');
-  mainCard.classList.add('blur');
+  blurWrapper.classList.add('blur');
 }
 
 function hidePopup() {
   if (!isHoveringButton && !isHoveringPopup) {
     hoverPopup.classList.remove('show');
     hoverBackdrop.classList.remove('active');
-    blurLayer.classList.remove('active');
-    mainCard.classList.remove('blur');
+    blurWrapper.classList.remove('blur');
   }
 }
 
@@ -466,8 +446,7 @@ videoThumbnails.forEach(thumbnail => {
     document.body.style.overflow = "hidden";
     hoverPopup.classList.remove('show');
     hoverBackdrop.classList.remove('active');
-    blurLayer.classList.remove('active');
-    mainCard.classList.remove('blur');
+    blurWrapper.classList.remove('blur');
   });
 });
 
