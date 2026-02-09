@@ -17,7 +17,7 @@
 body{
   background:#0b0b0b;
   min-height:100vh;
-  overflow-y:auto;
+  overflow:hidden;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -62,6 +62,7 @@ canvas{position:fixed;inset:0;z-index:0}
   flex-direction:column;
   justify-content:space-between;
   pointer-events:auto;
+  z-index:10;
 }
 
 /* PROFIL - DİKEY DİKDÖRTGEN VE OVAL KENARLI */
@@ -355,6 +356,7 @@ canvas{position:fixed;inset:0;z-index:0}
 /* MATRIX CANVAS SETUP */
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
+const mainCard = document.getElementById('mainCard');
 
 function resizeCanvas() {
   canvas.height = window.innerHeight;
@@ -369,18 +371,77 @@ const fontSize = 18;
 let columns = Math.floor(canvas.width / fontSize);
 let drops = [];
 
+// Paddle (oyuncu kontrolü)
+const paddle = {
+  x: 0,
+  y: 0,
+  width: 150,
+  height: 15,
+  speed: 10,
+  dx: 0
+};
+
 function initDrops() {
   columns = Math.floor(canvas.width / fontSize);
   drops = [];
   for(let i = 0; i < columns; i++) {
-    drops[i] = 1;
+    drops[i] = {
+      y: Math.floor(Math.random() * canvas.height / fontSize),
+      x: i,
+      speed: 1,
+      dx: 0,
+      bounced: false
+    };
   }
+  // Paddle pozisyonunu güncelle
+  paddle.x = canvas.width / 2 - paddle.width / 2;
+  paddle.y = canvas.height - 30;
 }
 initDrops();
 
-window.addEventListener('resize', initDrops);
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  initDrops();
+});
 
-/* MATRIX ANİMASYONU */
+// Ana kartın pozisyonunu al
+function getCardBounds() {
+  const cardRect = mainCard.getBoundingClientRect();
+  return {
+    x: cardRect.left,
+    y: cardRect.top,
+    width: cardRect.width,
+    height: cardRect.height,
+    right: cardRect.right,
+    bottom: cardRect.bottom
+  };
+}
+
+// Paddle çiz
+function drawPaddle() {
+  const gradient = ctx.createLinearGradient(paddle.x, paddle.y, paddle.x, paddle.y + paddle.height);
+  gradient.addColorStop(0, 'rgba(168, 85, 247, 0.8)');
+  gradient.addColorStop(1, 'rgba(147, 51, 234, 0.8)');
+  
+  ctx.fillStyle = gradient;
+  ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+  
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(paddle.x, paddle.y, paddle.width, paddle.height);
+}
+
+// Paddle hareket
+function movePaddle() {
+  paddle.x += paddle.dx;
+  
+  if(paddle.x < 0) paddle.x = 0;
+  if(paddle.x + paddle.width > canvas.width) {
+    paddle.x = canvas.width - paddle.width;
+  }
+}
+
+/* MATRIX ANİMASYONU - İNTERAKTİF */
 let lastTime = 0;
 const interval = 35;
 
@@ -388,18 +449,96 @@ function draw(currentTime) {
   if (currentTime - lastTime >= interval) {
     ctx.fillStyle = "rgba(0,0,0,0.06)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#a855f7";
-    ctx.font = fontSize + "px monospace";
+    
+    const card = getCardBounds();
     
     for(let i = 0; i < drops.length; i++) {
-      const char = text[Math.floor(Math.random() * text.length)];
-      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+      const drop = drops[i];
+      const x = (drop.x + drop.dx) * fontSize;
+      const y = drop.y * fontSize;
       
-      if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
+      // Ana kart ile çakışma kontrolü - kart içindeyse çizme
+      const isInsideCard = (y > card.y && y < card.bottom && x > card.x && x < card.right);
+      
+      if (!isInsideCard) {
+        // Mor renk - sekse bile renk değişmez
+        ctx.fillStyle = "#a855f7";
+        ctx.font = fontSize + "px monospace";
+        const char = text[Math.floor(Math.random() * text.length)];
+        ctx.fillText(char, x, y);
       }
-      drops[i]++;
+      
+      // Paddle ile çarpışma kontrolü
+      if(drop.speed > 0 && !drop.bounced) {
+        if(y + fontSize > paddle.y && 
+           y < paddle.y + paddle.height &&
+           x > paddle.x && 
+           x < paddle.x + paddle.width) {
+          // Paddle'a çarptı - yukarı fırlat
+          drop.speed = -3;
+          drop.bounced = true;
+          // Paddle'ın hangi tarafına çarptığına göre çapraz hareket
+          const hitPos = (x - paddle.x) / paddle.width;
+          if(hitPos < 0.33) {
+            drop.dx = -1.2; // Sola çapraz
+          } else if(hitPos > 0.66) {
+            drop.dx = 1.2; // Sağa çapraz
+          } else {
+            drop.dx = (Math.random() - 0.5) * 0.8; // Ortadan hafif çapraz
+          }
+        }
+      }
+      
+      // Ana kart ile çarpışma kontrolü - kartın ÜSTÜNE gelince
+      if(drop.speed > 0 && !drop.bounced) {
+        // Kartın üst kısmına yaklaşıyor mu?
+        if(y + fontSize >= card.y - 5 && y <= card.y + 10 &&
+           x >= card.x - fontSize && x <= card.right + fontSize) {
+          // Karta çarptı - yukarı fırlat
+          drop.speed = -2.5;
+          drop.bounced = true;
+          // Kartın hangi tarafına çarptığına göre çapraz hareket
+          const cardCenterX = card.x + card.width / 2;
+          if(x < cardCenterX - 50) {
+            drop.dx = -1; // Sola çapraz
+          } else if(x > cardCenterX + 50) {
+            drop.dx = 1; // Sağa çapraz
+          } else {
+            drop.dx = (Math.random() - 0.5) * 1.5; // Ortadan rasgele çapraz
+          }
+        }
+      }
+      
+      // Drop hareketi
+      drop.y += drop.speed;
+      
+      // Yukarı sınırı - yukarı giden harfler yukarıda kaybolunca tekrar aşağıdan başlat
+      if(drop.y < -5) {
+        drop.y = Math.floor(Math.random() * canvas.height / fontSize);
+        drop.speed = 1;
+        drop.bounced = false;
+        drop.dx = 0;
+        drop.x = i; // Orijinal sütununa geri dön
+      }
+      
+      // Alt sınırı - aşağı inen harfler alta gelince tekrar baştan
+      if(drop.y * fontSize > canvas.height && drop.speed > 0 && Math.random() > 0.975) {
+        drop.y = 0;
+        drop.bounced = false;
+        drop.dx = 0;
+        drop.x = i;
+      }
+      
+      // Yatay sınır kontrolü - ekrandan çıkarsa sütununa geri döndür
+      if(drop.x + drop.dx < 0 || drop.x + drop.dx >= columns) {
+        drop.dx = 0;
+        drop.x = i;
+      }
     }
+    
+    // Paddle'ı çiz
+    movePaddle();
+    drawPaddle();
     
     lastTime = currentTime;
   }
@@ -408,6 +547,52 @@ function draw(currentTime) {
 }
 
 requestAnimationFrame(draw);
+
+// Klavye kontrolleri
+let rightPressed = false;
+let leftPressed = false;
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') rightPressed = true;
+  if(e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') leftPressed = true;
+});
+
+document.addEventListener('keyup', (e) => {
+  if(e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') rightPressed = false;
+  if(e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') leftPressed = false;
+});
+
+// Paddle hareketi güncelle
+setInterval(() => {
+  if(rightPressed) paddle.dx = paddle.speed;
+  else if(leftPressed) paddle.dx = -paddle.speed;
+  else paddle.dx = 0;
+}, 10);
+
+// Fare kontrolü
+document.addEventListener('mousemove', (e) => {
+  const mouseX = e.clientX;
+  paddle.x = mouseX - paddle.width / 2;
+  
+  if(paddle.x < 0) paddle.x = 0;
+  if(paddle.x + paddle.width > canvas.width) {
+    paddle.x = canvas.width - paddle.width;
+  }
+});
+
+// Touch kontrolleri (mobil)
+document.addEventListener('touchmove', (e) => {
+  const touch = e.touches[0];
+  const touchX = touch.clientX;
+  paddle.x = touchX - paddle.width / 2;
+  
+  if(paddle.x < 0) paddle.x = 0;
+  if(paddle.x + paddle.width > canvas.width) {
+    paddle.x = canvas.width - paddle.width;
+  }
+  
+  e.preventDefault();
+}, { passive: false });
 
 /* HOVER POPUP SİSTEMİ - Sadece butonun tam üstüne gelince */
 const highlightBtn = document.getElementById('highlightBtn');
